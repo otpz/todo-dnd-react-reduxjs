@@ -6,44 +6,60 @@ import List from '../List/List'
 import { BsPlusLg } from "react-icons/bs";
 
 const MainBoard = () => {
-    const [lists, setLists] = useState<ListType[]>([
-      {id: 1, title: "ToDo", isActive: true, description: "ToDo List", items: [{id:1, title: "Learn Next.js", isActive: true, listId: 1}, {id:2, title: "Learn Docker", isActive: true, listId: 1}]},
-      {id: 2, title: "In Process", isActive: true, description: "ToDo List", items: [{id:1, title: "Learn Redux Toolkit", isActive: true, listId: 2}]}
-    ])
+  const formRef = useRef<HTMLFormElement>(null); // add new list form ref
 
-    const [listInputValue, setListInputValue] = useState<string>("")
+  const [lists, setLists] = useState<ListType[]>([
+    {id: 1, title: "ToDo", isActive: true, items: [{id:1, title: "Learn Next.js", isActive: true, listId: 1}, {id:2, title: "Learn Docker", isActive: true, listId: 1}]},
+    {id: 2, title: "In Process", isActive: true, items: [{id:1, title: "Learn Redux Toolkit", isActive: true, listId: 2}]}
+  ])
 
-    const formRef = useRef<HTMLFormElement>(null); // add new list form ref
-  
-    const [toggleForm, setToggleForm] = useState<boolean>(false)
+  const [listInputValue, setListInputValue] = useState<string>("")
+  const [toggleForm, setToggleForm] = useState<boolean>(false)
 
-    const handleToggleForm = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+  const handleToggleForm = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
       e.preventDefault()
       setToggleForm(prev => !prev)
-    }
+  }
 
-    const handleClickOutside = (e: MouseEvent) => { // check where clicked
-      console.log(e.target)
+  const handleClickOutside = (e: MouseEvent) => { // check where clicked
       if (formRef.current && !formRef.current.contains(e.target as Node)) {
-        setToggleForm(false)
+        resetFormAndInput()
       }
-    }
+  }
 
-    const handleFormSubmit = (e: FormEvent) => {
-      e.preventDefault()
-      console.log(listInputValue)
-    }
-  
-    useEffect(() => {
+  const handleFormSubmit = (e: FormEvent) => {
+    e.preventDefault()
+
+    setLists((prev) => {
+      const newList: ListType = {
+        id: prev.length + 1,
+        title: listInputValue,
+        isActive: true,
+        createdDate: Date.now(),
+        isDeleted: false,
+        items: []
+      }
+      return [...prev, newList]
+    })
+
+    resetFormAndInput()
+  }
+
+  const resetFormAndInput = () => {
+    setToggleForm(false)
+    setListInputValue("")
+  }
+
+  useEffect(() => {
       if (toggleForm) {
         document.addEventListener('mousedown', handleClickOutside)
       } 
       return () => {
         document.removeEventListener('mousedown', handleClickOutside) //clear listener
       }
-    }, [toggleForm])
+  }, [toggleForm])
 
-    return (
+  return (
     <div className={styles.container}>
       <div className={styles.list}>
       {

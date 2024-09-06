@@ -5,7 +5,6 @@ export type ListType = {
     title: string,
     isActive: boolean,
     isDeleted?: boolean,
-    description?: string,
     createdDate?: number,
     items?: TaskType[]
 }
