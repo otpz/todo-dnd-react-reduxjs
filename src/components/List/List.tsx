@@ -19,7 +19,7 @@ const List: React.FC<Props> = ({list}) => {
       </div>
       <div className={styles.tasks}>
         {
-          list.items.map((task, idx) => (
+          list.items!!.map((task, idx) => (
             <Task key={idx} task={task}/>
           ))
         }

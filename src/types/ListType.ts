@@ -7,5 +7,5 @@ export type ListType = {
     isDeleted?: boolean,
     description?: string,
     createdDate?: number,
-    items: TaskType[]
+    items?: TaskType[]
 }

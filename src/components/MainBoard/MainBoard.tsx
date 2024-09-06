@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { FormEvent, useEffect, useRef, useState } from 'react'
 import styles from './style.module.css'
 import { ListType } from '../../types/ListType'
 import List from '../List/List'
@@ -10,30 +10,38 @@ const MainBoard = () => {
       {id: 1, title: "ToDo", isActive: true, description: "ToDo List", items: [{id:1, title: "Learn Next.js", isActive: true, listId: 1}, {id:2, title: "Learn Docker", isActive: true, listId: 1}]},
       {id: 2, title: "In Process", isActive: true, description: "ToDo List", items: [{id:1, title: "Learn Redux Toolkit", isActive: true, listId: 2}]}
     ])
+
+    const [listInputValue, setListInputValue] = useState<string>("")
+
+    const formRef = useRef<HTMLFormElement>(null); // add new list form ref
   
     const [toggleForm, setToggleForm] = useState<boolean>(false)
-    
-    const addNewList = () => {
-      console.log("adding new list")
-    }
 
     const handleToggleForm = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
       e.preventDefault()
       setToggleForm(prev => !prev)
     }
 
-    useEffect(() => {
-      function handleClick(e: any) {
-        console.log(e);
+    const handleClickOutside = (e: MouseEvent) => { // check where clicked
+      console.log(e.target)
+      if (formRef.current && !formRef.current.contains(e.target as Node)) {
+        setToggleForm(false)
       }
+    }
 
-      document.body.addEventListener('click', handleClick);
-
+    const handleFormSubmit = (e: FormEvent) => {
+      e.preventDefault()
+      console.log(listInputValue)
+    }
+  
+    useEffect(() => {
+      if (toggleForm) {
+        document.addEventListener('mousedown', handleClickOutside)
+      } 
       return () => {
-        document.body.removeEventListener('click', handleClick);
-      };
-
-    }, []);
+        document.removeEventListener('mousedown', handleClickOutside) //clear listener
+      }
+    }, [toggleForm])
 
     return (
     <div className={styles.container}>
@@ -43,11 +51,11 @@ const MainBoard = () => {
           <List key={idx} list={list}/>
         ))
       }
-        <div className={styles.control} onClick={addNewList}>
+        <div className={styles.control}>
           {
             toggleForm === false ? <button onClick={handleToggleForm} className={styles.control_button}>+  Add new list</button> : 
-            <form id='newListForm' action="" className={styles.add_form} style={{padding: "10px"}}>
-              <input type="text" placeholder='Enter the list name'/>
+            <form onSubmit={handleFormSubmit} ref={formRef} action="" className={styles.add_form} style={{padding: "10px"}}>
+              <input value={listInputValue} onChange={(e) => setListInputValue(e.target.value)} type="text" placeholder='Enter the list name'/>
               <div className={styles.form_buttons}>
                 <button className={styles.submit_button}>Add</button>
                 <button className={styles.cancel_button} onClick={handleToggleForm}>
