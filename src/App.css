@@ -1,0 +1,31 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap');
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html{
+  font-family: "Inter", sans-serif;
+}
+
+body,
+html{
+  min-height: 100vh;
+  height: 100%; 
+}
+
+body{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.container{
+  width: 100%;
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: rgb(28, 28, 28); 
+}
