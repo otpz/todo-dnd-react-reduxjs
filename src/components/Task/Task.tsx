@@ -1,8 +1,20 @@
 import React from 'react'
+import styles from './style.module.css'
+import { TaskType } from '../../types/TaskType'
+import { BsFillTrash3Fill } from "react-icons/bs"
 
-function Task() {
+interface Props {
+  task: TaskType
+}
+
+const Task:React.FC<Props> = ({task}) => {
   return (
-    <div>Task</div>
+    <div className={styles.container}>
+      <span>{task.title}</span>
+      <div className={styles.trash}>
+        <BsFillTrash3Fill className={styles.trash}/>
+      </div>
+    </div>
   )
 }
 

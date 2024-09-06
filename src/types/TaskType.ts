@@ -1,8 +1,8 @@
-export type Task = {
+export type TaskType = {
     id: number,
     listId: number,
     title: string,
     isActive: boolean,
-    isDeleted: boolean,
-    createdDate: string
+    isDeleted?: boolean,
+    createdDate?: string
 }
