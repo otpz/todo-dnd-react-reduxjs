@@ -7,6 +7,7 @@ import { ListType } from '../../types/ListType'
 import { useClickOutside } from '../../hooks/useClickOutside';
 
 const MainBoard = () => {
+  
   const formRef = useRef<HTMLFormElement>(null); // add new list form ref
   const [toggleForm, setToggleForm] = useState<boolean>(false)
   
@@ -45,7 +46,7 @@ const MainBoard = () => {
       <div className={styles.list}>
       {
         lists.map((list, idx) => (
-          <List key={idx} list={list}/>
+          <List key={idx} list={list} setLists={setLists}/>
         ))
       }
         <div className={styles.control}>

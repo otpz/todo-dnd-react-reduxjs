@@ -2,7 +2,7 @@
 .container{
     margin-top: 10px;
     width: 16.875rem;
-    min-height: 12.5rem;
+    /* min-height: 12.5rem; */
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -53,6 +53,7 @@
 }
 
 .button{
+
     width: 250px;
     height: 32px;
     bottom: 10px;
@@ -72,4 +73,10 @@
 
 .button:hover{
     background-color: #22272B;
+}
+
+.bottom_form{   
+    margin-top: 10px;
+    width: 100%;
+    min-height: 32px;
 }

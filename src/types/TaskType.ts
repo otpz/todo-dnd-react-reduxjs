@@ -4,5 +4,5 @@ export type TaskType = {
     title: string,
     isActive: boolean,
     isDeleted?: boolean,
-    createdDate?: string
+    createdDate?: number
 }
