@@ -1,4 +1,4 @@
-import React, { FormEvent, useEffect, useRef, useState } from 'react'
+import React, { FormEvent, useRef, useState } from 'react'
 import styles from './style.module.css'
 import { ListType } from '../../types/ListType'
 import { BsThreeDots } from "react-icons/bs";
@@ -51,7 +51,7 @@ const List: React.FC<Props> = ({list, setLists}) => {
         <div className={styles.tasks}>
           {
             list.items!!.map((task, idx) => (
-              <Task key={idx} task={task}/>
+              <Task key={idx} task={task} setLists={setLists}/>
             ))
           }
         </div>
