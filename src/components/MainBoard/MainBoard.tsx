@@ -14,8 +14,9 @@ const MainBoard = () => {
   useClickOutside(formRef, () => setToggleForm(false)) // close form when clicking form's outside custom hook
 
   const [lists, setLists] = useState<ListType[]>([
-    {id: 1, title: "ToDo", isActive: true, items: [{id:1, title: "Learn Next.js", isActive: true, listId: 1}, {id:2, title: "Learn Docker", isActive: true, listId: 1}]},
-    {id: 2, title: "In Process", isActive: true, items: [{id:1, title: "Learn Redux Toolkit", isActive: true, listId: 2}]}
+    {id: 1, title: "To Do", isActive: true, items: [{id:1, title: "Learn Next.js", isActive: true, listId: 1}, {id:2, title: "Learn Docker", isActive: true, listId: 1}]},
+    {id: 2, title: "In Process", isActive: true, items: [{id:1, title: "Learn Redux Toolkit", isActive: true, listId: 2}]},
+    {id: 3, title: "Completed", isActive: true, items: [{id:1, title: "Learn Tailwind.css", isActive: true, listId: 3}]}
   ])
 
   const handleToggleForm = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {

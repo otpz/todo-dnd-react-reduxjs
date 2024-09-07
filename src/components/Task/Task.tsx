@@ -10,8 +10,8 @@ interface Props {
 const Task:React.FC<Props> = ({task}) => {
   return (
     <div className={styles.container}>
-      <span>{task.title}</span>
-      <div className={styles.trash}>
+      <div className={styles.title}>{task.title}</div>
+      <div className={styles.icon_box}>
         <BsFillTrash3Fill className={styles.trash}/>
       </div>
     </div>

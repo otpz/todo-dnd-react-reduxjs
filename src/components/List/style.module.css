@@ -4,6 +4,7 @@
     width: 270px;
     margin-top: 10px;
     margin-right: 10px;
+    user-select: none;
 }
 
 .container{
@@ -49,16 +50,16 @@
 }
 
 .tasks{
-    margin-top: 10px;
+    margin-top: 5px;
+    display: grid;
+    gap: 6px;
     width: 100%;
     max-height: 146px;
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
     overflow-y: auto;
     overflow-x: hidden;
     scrollbar-width: thin;
     scrollbar-color: #323b37 #1c2015;
+    padding-bottom: 5px;
 }
 
 .tasks::-webkit-scrollbar {
@@ -97,5 +98,4 @@
 .bottom_form{   
     margin-top: 10px;
     width: 100%;
-    /* max-height: 32px; */
 }

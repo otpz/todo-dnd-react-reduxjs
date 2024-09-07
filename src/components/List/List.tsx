@@ -39,11 +39,6 @@ const List: React.FC<Props> = ({list, setLists}) => {
     setToggleForm(false)
   }
 
-  useEffect(() => {
-    console.log("list updatet!", list)
-  }, [list])
-
-  
   return (
     <div className={styles.list_container}>
       <div className={styles.container}>
