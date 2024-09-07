@@ -7,9 +7,6 @@ import { TaskType } from '../../types/TaskType';
 import ToggleForm from '../ToggleForm/ToggleForm';
 import { useClickOutside } from '../../hooks/useClickOutside';
 
-// formu component yapabilir miyiz?
-// toggle formu hook yapabilir miyiz?
-
 interface Props {
   list: ListType
   setLists: React.Dispatch<React.SetStateAction<ListType[]>>
@@ -19,7 +16,6 @@ const List: React.FC<Props> = ({list, setLists}) => {
 
   const formRef = useRef<HTMLFormElement>(null);
   const [toggleForm, setToggleForm] = useState<boolean>(false)
-  const [task, setTask] = useState<TaskType>()
 
   useClickOutside(formRef, () => setToggleForm(false))
 
@@ -47,31 +43,35 @@ const List: React.FC<Props> = ({list, setLists}) => {
     console.log("list updatet!", list)
   }, [list])
 
+  
   return (
-    <div className={styles.container}>
-      <div className={styles.header}>
-        <span>{list.title}</span>
-        <div className={styles.settings}>
-          <BsThreeDots />
+    <div className={styles.list_container}>
+      <div className={styles.container}>
+        <div className={styles.header}>
+          <span>{list.title}</span>
+          <div className={styles.settings}>
+            <BsThreeDots />
+          </div>
+        </div>
+        <div className={styles.tasks}>
+          {
+            list.items!!.map((task, idx) => (
+              <Task key={idx} task={task}/>
+            ))
+          }
+        </div>
+        <div className={styles.bottom_form}>
+          {
+            toggleForm === false ?
+            <button onClick={handleToggleForm} className={styles.button}>
+            + Add new task
+            </button> :
+            <ToggleForm handleToggleForm={handleToggleForm} handleFormSubmit={handleFormSubmit} formRef={formRef}/>
+          }
         </div>
       </div>
-      <div className={styles.tasks}>
-        {
-          list.items!!.map((task, idx) => (
-            <Task key={idx} task={task}/>
-          ))
-        }
-      </div>
-      <div className={styles.bottom_form}>
-        {
-          toggleForm === false ?
-          <button onClick={handleToggleForm} className={styles.button}>
-          + Add new task
-          </button> :
-          <ToggleForm handleToggleForm={handleToggleForm} handleFormSubmit={handleFormSubmit} formRef={formRef}/>
-        }
-      </div>
     </div>
+    
   )
 }
 
