@@ -40,11 +40,9 @@ const Task:React.FC<Props> = ({task, setLists}) => {
   }
 
   const deleteTaskById = (taskId: number, listId: number) => {
-    console.log(listId, taskId)
     setLists((prev) => 
       prev.map((list) => {
         if (list.id === listId){
-          console.log(list)
           const newList: ListType = {...list, items: list.items!!.filter(task => task.id !== taskId)}
           return newList
         } else return list

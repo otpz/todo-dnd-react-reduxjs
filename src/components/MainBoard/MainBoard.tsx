@@ -1,4 +1,4 @@
-import { FormEvent, useRef, useState } from 'react'
+import { FormEvent, useEffect, useRef, useState } from 'react'
 import styles from './style.module.css'
 import List from '../List/List'
 import ToggleForm from '../ToggleForm/ToggleForm'
@@ -27,8 +27,9 @@ const MainBoard = () => {
     e.preventDefault()
 
     setLists((prev) => {
+      const newListId: number = prev.length > 0 ? prev[prev.length-1].id : 0
       const newList: ListType = {
-        id: prev.length + 1,
+        id: newListId + 1,
         title: inputValue,
         isActive: true,
         createdDate: Date.now(),
@@ -42,6 +43,10 @@ const MainBoard = () => {
     })
     setToggleForm(false)
   }
+
+  useEffect(() => {
+    console.log(lists)
+  }, [lists])
 
   return (
     <div className={styles.container}>
