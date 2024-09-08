@@ -35,6 +35,9 @@ const MainBoard = () => {
         isDeleted: false,
         items: []
       }
+      if (!inputValue){
+        return prev
+      }
       return [...prev, newList]
     })
     setToggleForm(false)

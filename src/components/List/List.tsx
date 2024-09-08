@@ -36,7 +36,7 @@ const List: React.FC<Props> = ({list, setLists}) => {
     e.preventDefault()
     setLists((prev) => 
       prev.map(mapList => {
-        if (mapList.id === list.id){
+        if (mapList.id === list.id && editInput){
           return {...mapList, title: editInput}
         }
         return mapList
@@ -70,7 +70,7 @@ const List: React.FC<Props> = ({list, setLists}) => {
     e.preventDefault()
     setLists((prev) => 
       prev.map((mapList) => {
-        if (mapList.id === list.id){
+        if (mapList.id === list.id && inputValue){
           const newTaskId: number = mapList.items!!.length
           const newTask: TaskType = {id: newTaskId+1, isActive: true, title: inputValue, listId: mapList.id, createdDate: Date.now(), isDeleted: false}
           return {...mapList, items: [...mapList.items!!, newTask]}

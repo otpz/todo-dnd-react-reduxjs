@@ -27,7 +27,7 @@ const Task:React.FC<Props> = ({task, setLists}) => {
       prev.map(mapList => {
         if (mapList.id === task.listId) {
           const updatedItems = mapList.items?.map(item => {
-            if (item.id === task.id) {
+            if (item.id === task.id && editInput) {
               return { ...item, title: editInput }
             }
             return item
