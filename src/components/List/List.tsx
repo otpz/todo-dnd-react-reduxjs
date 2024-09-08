@@ -2,6 +2,7 @@ import React, { FormEvent, useRef, useState } from 'react'
 import styles from './style.module.css'
 import { ListType } from '../../types/ListType'
 import { BsThreeDots } from "react-icons/bs";
+import { GrClose, GrEdit, GrTrash } from "react-icons/gr";
 import Task from '../Task/Task';
 import { TaskType } from '../../types/TaskType';
 import ToggleForm from '../ToggleForm/ToggleForm';
@@ -14,10 +15,48 @@ interface Props {
 
 const List: React.FC<Props> = ({list, setLists}) => {
 
-  const formRef = useRef<HTMLFormElement>(null);
+  const editFormRef = useRef<HTMLFormElement>(null)
+  const formRef = useRef<HTMLFormElement>(null)
+  const settingsRef = useRef<HTMLDivElement>(null)
+  const [editInput, setEditInput] = useState<string>("")
   const [toggleForm, setToggleForm] = useState<boolean>(false)
+  const [toggleSettingsMenu, setToggleSettingsMenu] = useState<boolean>(false)
+  const [toggleEditList, setToggleEditList] = useState<boolean>(false)
 
+  useClickOutside(editFormRef, () => setToggleEditList(false))
   useClickOutside(formRef, () => setToggleForm(false))
+  useClickOutside(settingsRef, () => setToggleSettingsMenu(false))
+
+  
+
+  const handleEditFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    setLists((prev) => 
+      prev.map(mapList => {
+        if (mapList.id === list.id){
+          return {...mapList, title: editInput}
+        }
+        return mapList
+      })
+    )
+  }
+
+  const deleteList = () => {
+    setLists((prev) => 
+      prev.filter(prevList => prevList.id !== list.id)
+    )
+    setToggleSettingsMenu(false)
+  }
+
+  const handleEditListForm = (e: React.MouseEvent<HTMLButtonElement | HTMLParagraphElement, MouseEvent>) => {
+    e.preventDefault()
+    setEditInput(list.title)
+    setToggleEditList(prev => !prev)
+  }
+
+  const handleToggleSettingsMenu = () => {
+      setToggleSettingsMenu(prev => !prev)
+  }
 
   const handleToggleForm = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault()
@@ -43,10 +82,29 @@ const List: React.FC<Props> = ({list, setLists}) => {
     <div className={styles.list_container}>
       <div className={styles.container}>
         <div className={styles.header}>
-          <span>{list.title}</span>
-          <div className={styles.settings}>
+          {
+            toggleEditList === false ?
+            <p onClick={(e) => handleEditListForm(e)}>{list.title}</p> :
+            <form onSubmit={handleEditFormSubmit} ref={editFormRef}>
+              <input  id='list_title_edit_input' type="text" value={editInput} onChange={(e) => setEditInput(e.target.value)}/>
+            </form>
+          }
+          <div className={styles.settings} onClick={handleToggleSettingsMenu}>
             <BsThreeDots />
           </div>
+          {toggleSettingsMenu && 
+          <div ref={settingsRef} className={styles.settings_menu}>
+            <div className={styles.settings_header}>
+              <h4>List Settings</h4>
+              <div onClick={handleToggleSettingsMenu} className={styles.settings_close_div}>
+                <GrClose className={styles.settings_icon}/>
+              </div>
+            </div>
+            <div className={styles.settings_buttons}>
+              <button onClick={handleEditListForm}>Edit <GrEdit className={styles.settings_icon}/></button>
+              <button onClick={deleteList}>Delete <GrTrash className={styles.settings_icon}/></button>
+            </div>
+          </div>}
         </div>
         <div className={styles.tasks}>
           {
@@ -61,7 +119,7 @@ const List: React.FC<Props> = ({list, setLists}) => {
             <button onClick={handleToggleForm} className={styles.button}>
             + Add new task
             </button> :
-            <ToggleForm handleToggleForm={handleToggleForm} handleFormSubmit={handleFormSubmit} formRef={formRef}/>
+            <ToggleForm formRef={formRef} handleToggleForm={handleToggleForm} handleFormSubmit={handleFormSubmit}/>
           }
         </div>
       </div>

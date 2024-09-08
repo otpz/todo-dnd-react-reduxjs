@@ -1,10 +1,9 @@
 import { FormEvent, useRef, useState } from 'react'
 import styles from './style.module.css'
 import List from '../List/List'
-import ToggleForm from '../ToggleForm/ToggleForm';
-
+import ToggleForm from '../ToggleForm/ToggleForm'
 import { ListType } from '../../types/ListType'
-import { useClickOutside } from '../../hooks/useClickOutside';
+import { useClickOutside } from '../../hooks/useClickOutside'
 
 const MainBoard = () => {
   
@@ -38,7 +37,6 @@ const MainBoard = () => {
       }
       return [...prev, newList]
     })
-
     setToggleForm(false)
   }
 
