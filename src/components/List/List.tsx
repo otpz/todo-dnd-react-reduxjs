@@ -1,12 +1,15 @@
 import React, { FormEvent, useRef, useState } from 'react'
-import styles from './style.module.css'
 import { ListType } from '../../types/ListType'
+import { TaskType } from '../../types/TaskType';
 import { BsThreeDots } from "react-icons/bs";
 import { GrClose, GrEdit, GrTrash } from "react-icons/gr";
 import Task from '../Task/Task';
-import { TaskType } from '../../types/TaskType';
 import ToggleForm from '../ToggleForm/ToggleForm';
 import { useClickOutside } from '../../hooks/useClickOutside';
+import styles from './style.module.css'
+import { useSortable } from '@dnd-kit/sortable';
+
+import {CSS} from "@dnd-kit/utilities"
 
 interface Props {
   list: ListType
@@ -22,6 +25,21 @@ const List: React.FC<Props> = ({list, setLists}) => {
   const [toggleForm, setToggleForm] = useState<boolean>(false)
   const [toggleSettingsMenu, setToggleSettingsMenu] = useState<boolean>(false)
   const [toggleEditList, setToggleEditList] = useState<boolean>(false)
+
+  //for sortable context.
+  const {setNodeRef, attributes, listeners, transform, transition } = useSortable({
+    id: list.id,
+    data: {
+      type: "List",
+      list
+    }
+  })
+
+  //for animation styling
+  const dndAnimationStyles = {
+    transition,
+    transform: CSS.Transform.toString(transform)
+  }
 
   useClickOutside(editFormRef, () => {
     setToggleEditList(false) 
@@ -82,9 +100,9 @@ const List: React.FC<Props> = ({list, setLists}) => {
   }
 
   return (
-    <div className={styles.list_container}>
+    <div ref={setNodeRef} style={dndAnimationStyles} className={styles.list_container}>
       <div className={styles.container}>
-        <div className={styles.header}>
+        <div className={styles.header} {...attributes} {...listeners}>
           {
             toggleEditList === false ?
             <p onClick={(e) => handleEditListForm(e)}>{list.title}</p> :
