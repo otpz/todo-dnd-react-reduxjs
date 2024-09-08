@@ -23,6 +23,20 @@ const Task:React.FC<Props> = ({task, setLists}) => {
 
   const handleEditFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+    setLists(prev => 
+      prev.map(mapList => {
+        if (mapList.id === task.listId) {
+          const updatedItems = mapList.items?.map(item => {
+            if (item.id === task.id) {
+              return { ...item, title: editInput }
+            }
+            return item
+          })
+          return { ...mapList, items: updatedItems };
+        }
+        return mapList
+      })
+    );
   }
 
   const deleteTaskById = (taskId: number, listId: number) => {

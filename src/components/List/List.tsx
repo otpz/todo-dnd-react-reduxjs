@@ -50,7 +50,7 @@ const List: React.FC<Props> = ({list, setLists}) => {
     )
     setToggleSettingsMenu(false)
   }
-
+  
   const handleEditListForm = (e: React.MouseEvent<HTMLButtonElement | HTMLParagraphElement, MouseEvent>) => {
     e.preventDefault()
     setEditInput(list.title)
