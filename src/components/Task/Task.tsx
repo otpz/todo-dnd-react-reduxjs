@@ -1,8 +1,9 @@
-import React from 'react'
+import React, { useRef, useState } from 'react'
 import styles from './style.module.css'
 import { TaskType } from '../../types/TaskType'
 import { BsFillTrash3Fill } from "react-icons/bs"
 import { ListType } from '../../types/ListType'
+import { useClickOutside } from '../../hooks/useClickOutside'
 
 interface Props {
   task: TaskType
@@ -10,6 +11,19 @@ interface Props {
 }
 
 const Task:React.FC<Props> = ({task, setLists}) => {
+
+  const editFormRef = useRef<HTMLFormElement>(null)
+  const [editInput, setEditInput] = useState<string>("")
+  const [toggleEditTask, setToggleEditTask] = useState<boolean>(false)
+
+  useClickOutside(editFormRef, () => {
+    setToggleEditTask(false)
+    editFormRef.current?.requestSubmit()
+  })
+
+  const handleEditFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+  }
 
   const deleteTaskById = (taskId: number, listId: number) => {
     console.log(listId, taskId)
@@ -24,9 +38,21 @@ const Task:React.FC<Props> = ({task, setLists}) => {
     )
   }
 
+  const handleEditTaskForm = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    e.preventDefault()
+    setEditInput(task.title)
+    setToggleEditTask(prev => !prev)
+  }
+
   return (
     <div className={styles.container}>
-      <div className={styles.title}>{task.title}</div>
+      {
+        toggleEditTask === false ?
+        <div className={styles.title} onClick={handleEditTaskForm}>{task.title}</div> :
+        <form onSubmit={handleEditFormSubmit} ref={editFormRef}>
+          <input autoComplete='off' autoFocus id='list_title_edit_input' type="text" value={editInput} onChange={(e) => setEditInput(e.target.value)} />
+        </form>
+      }
       <div className={styles.icon_box} onClick={() => deleteTaskById(task.id, task.listId)}>
         <BsFillTrash3Fill className={styles.trash}/>
       </div>

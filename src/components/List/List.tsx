@@ -44,7 +44,7 @@ const List: React.FC<Props> = ({list, setLists}) => {
     )
   }
 
-  const deleteList = () => {
+  const deleteListById = () => {
     setLists((prev) => 
       prev.filter(prevList => prevList.id !== list.id)
     )
@@ -105,7 +105,7 @@ const List: React.FC<Props> = ({list, setLists}) => {
             </div>
             <div className={styles.settings_buttons}>
               <button onClick={handleEditListForm}>Edit <GrEdit className={styles.settings_icon}/></button>
-              <button onClick={deleteList}>Delete <GrTrash className={styles.settings_icon}/></button>
+              <button onClick={deleteListById}>Delete <GrTrash className={styles.settings_icon}/></button>
             </div>
           </div>}
         </div>
