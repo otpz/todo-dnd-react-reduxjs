@@ -89,7 +89,7 @@ const List: React.FC<Props> = ({list, setLists}) => {
             toggleEditList === false ?
             <p onClick={(e) => handleEditListForm(e)}>{list.title}</p> :
             <form onSubmit={handleEditFormSubmit} ref={editFormRef}>
-              <input autoFocus id='list_title_edit_input' type="text" value={editInput} onChange={(e) => setEditInput(e.target.value)} />
+              <input autoComplete='off' autoFocus id='list_title_edit_input' type="text" value={editInput} onChange={(e) => setEditInput(e.target.value)} />
             </form>
           }
           <div className={styles.settings} onClick={handleToggleSettingsMenu}>
