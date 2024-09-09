@@ -5,7 +5,7 @@ import ToggleForm from '../ToggleForm/ToggleForm'
 import { ListType } from '../../types/ListType'
 import { useClickOutside } from '../../hooks/useClickOutside'
 
-import {DndContext, DragEndEvent, DragOverlay, DragStartEvent} from "@dnd-kit/core"
+import {DndContext, DragEndEvent, DragOverlay, DragStartEvent, PointerSensor, useSensor, useSensors} from "@dnd-kit/core"
 import {arrayMove, SortableContext} from "@dnd-kit/sortable"
 import { createPortal } from 'react-dom'
 import { createUniqueId } from '../../helpers/createUniqueId'
@@ -79,8 +79,14 @@ const MainBoard = () => {
     })
   }
 
+  const sensors = useSensors(useSensor(PointerSensor, {
+    activationConstraint: {
+      distance: 5 // if we drag the element by 5px, dragging gonna run
+    }
+  }))
+
   return (
-    <DndContext onDragStart={onDragStart} onDragEnd={onDragEnd}>
+    <DndContext sensors={sensors} onDragStart={onDragStart} onDragEnd={onDragEnd}>
       <div className={styles.container}>
         <div className={styles.list}>
           <SortableContext items={listsId}>

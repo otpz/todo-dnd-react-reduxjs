@@ -34,7 +34,8 @@ const List: React.FC<Props> = ({list, setLists}) => {
       type: "List",
       list,
     },
-    animateLayoutChanges: () => false
+    animateLayoutChanges: () => false,
+    disabled: toggleEditList
   })
 
   //for animation styling
