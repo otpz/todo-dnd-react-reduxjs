@@ -51,11 +51,11 @@ const Task:React.FC<Props> = ({task, setLists}) => {
             }
             return item
           })
-          return { ...mapList, items: updatedItems };
+          return { ...mapList, items: updatedItems }
         }
         return mapList
       })
-    );
+    )
   }
 
   const deleteTaskById = (taskId: string, listId: string) => {
@@ -78,7 +78,7 @@ const Task:React.FC<Props> = ({task, setLists}) => {
 
   if (isDragging){
     return <div ref={setNodeRef} style={dndAnimationStyles} {...attributes} {...listeners} className={styles.container_opacity}>
-      <div className={styles.title}>{task.title}</div> :
+      <div className={styles.title}>{task.title}</div>
       <div className={styles.icon_box}>
         <BsFillTrash3Fill className={styles.trash}/>
       </div>

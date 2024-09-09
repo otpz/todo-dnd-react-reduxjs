@@ -25,15 +25,16 @@
     min-height: 32px;
     display: flex;
     align-items: center;
-    background-color: #22272B;
+    background-color: rgba(34, 39, 43, 0.3);
     padding: 0 6px;
     border-radius: 8px;
     cursor: pointer;
-    border: 1px solid transparent;
+    border: 1px solid white;
     position: relative;
     color: rgb(182, 194, 207);
     font-size: 14px;
     font-weight: 500;
+
 }
 
 
@@ -45,7 +46,6 @@
 .container_opacity form,
 .container form {
     width: 85%;
-    padding-bottom: 4px;
 }
 
 .container_opacity form,

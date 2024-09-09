@@ -6,7 +6,7 @@ import { ListType } from '../../types/ListType'
 import { TaskType } from '../../types/TaskType'
 import { useClickOutside } from '../../hooks/useClickOutside'
 
-import {DndContext, DragEndEvent, DragOverlay, DragStartEvent, PointerSensor, useSensor, useSensors} from "@dnd-kit/core"
+import {DndContext, DragEndEvent, DragOverEvent, DragOverlay, DragStartEvent, PointerSensor, useSensor, useSensors} from "@dnd-kit/core"
 import {arrayMove, SortableContext} from "@dnd-kit/sortable"
 import { createPortal } from 'react-dom'
 import { createUniqueId } from '../../helpers/createUniqueId'
@@ -58,11 +58,16 @@ const MainBoard = () => {
   useEffect(() => {
     console.log(lists)
   }, [lists])
+  
+  const sensors = useSensors(useSensor(PointerSensor, {
+    activationConstraint: {
+      distance: 5 // if we drag the element by 5px, dragging gonna run
+    }
+  }))
 
   const onDragStart = (e: DragStartEvent) => {
     setActiveList(null)
     setActiveTask(null)
-    console.log(e)
 
     if (e.active.data.current?.type === "List"){
       setActiveList(e.active.data.current.list)
@@ -76,6 +81,9 @@ const MainBoard = () => {
   }
 
   const onDragEnd = (e: DragEndEvent) => {
+    setActiveList(null)
+    setActiveTask(null)
+
     const {active, over} = e // active and over lists
 
     if (active.data.current?.type === "Task"){
@@ -99,14 +107,39 @@ const MainBoard = () => {
     setActiveList(null)
   }
 
-  const sensors = useSensors(useSensor(PointerSensor, {
-    activationConstraint: {
-      distance: 5 // if we drag the element by 5px, dragging gonna run
+  const onDragOver = (e: DragOverEvent) => {
+    const {active, over} = e // active and over lists
+
+    if (!over) return
+
+    const activeId = active.id
+    const overId = over.id
+
+    if (activeId === overId) return
+
+    const isActiveATask = active.data.current?.type === "Task"
+    const isOverATask = over.data.current?.type === "Task"
+
+    if (!isActiveATask) return
+
+    // I'm dropping a task over anohter task
+    if (isActiveATask && isOverATask){
+      setLists(prev => 
+        prev.map(list => {
+          const activeTaskIndex = list.items!!.findIndex(task => task.id === activeId)
+          const overTaskIndex = list.items!!.findIndex(task => task.id === overId)
+          return {...list, items: arrayMove(list.items!!, activeTaskIndex, overTaskIndex)}
+        })
+      )
     }
-  }))
+
+    const isOverAList = over.data.current?.type === "List"
+    
+  }
+
 
   return (
-    <DndContext sensors={sensors} onDragStart={onDragStart} onDragEnd={onDragEnd}>
+    <DndContext sensors={sensors} onDragStart={onDragStart} onDragEnd={onDragEnd} onDragOver={onDragOver}>
       <div className={styles.container}>
         <div className={styles.list}>
           <SortableContext items={listsId}>
