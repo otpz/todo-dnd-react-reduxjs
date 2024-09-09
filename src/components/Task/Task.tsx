@@ -9,10 +9,10 @@ import {CSS} from "@dnd-kit/utilities"
 
 interface Props {
   task: TaskType
-  setLists: React.Dispatch<React.SetStateAction<ListType[]>>
+  setTasks: React.Dispatch<React.SetStateAction<TaskType[]>>
 }
 
-const Task:React.FC<Props> = ({task, setLists}) => {
+const Task:React.FC<Props> = ({task, setTasks}) => {
 
   const editFormRef = useRef<HTMLFormElement>(null)
   const [editInput, setEditInput] = useState<string>("")
@@ -42,31 +42,11 @@ const Task:React.FC<Props> = ({task, setLists}) => {
 
   const handleEditFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    setLists(prev => 
-      prev.map(mapList => {
-        if (mapList.id === task.listId) {
-          const updatedItems = mapList.items?.map(item => {
-            if (item.id === task.id && editInput) {
-              return { ...item, title: editInput }
-            }
-            return item
-          })
-          return { ...mapList, items: updatedItems }
-        }
-        return mapList
-      })
-    )
+    setTasks(tasks => tasks.map(prevTask => prevTask.id === task.id && editInput ? { ...prevTask, title: editInput } : prevTask))
   }
 
   const deleteTaskById = (taskId: string, listId: string) => {
-    setLists((prev) => 
-      prev.map((list) => {
-        if (list.id === listId){
-          const newList: ListType = {...list, items: list.items!!.filter(task => task.id !== taskId)}
-          return newList
-        } else return list
-      })
-    )
+    setTasks(tasks => tasks.filter(prevTask => prevTask.id !== taskId))
   }
 
   const handleEditTaskForm = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {

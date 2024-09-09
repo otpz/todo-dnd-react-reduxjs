@@ -14,10 +14,13 @@ import { createUniqueId } from '../../helpers/createUniqueId';
 
 interface Props {
   list: ListType
+  tasks: TaskType[]
+  
   setLists: React.Dispatch<React.SetStateAction<ListType[]>>
+  setTasks: React.Dispatch<React.SetStateAction<TaskType[]>>
 }
 
-const List: React.FC<Props> = ({list, setLists}) => {
+const List: React.FC<Props> = ({list, setLists, tasks, setTasks}) => {
 
   const editFormRef = useRef<HTMLFormElement>(null)
   const formRef = useRef<HTMLFormElement>(null)
@@ -53,7 +56,7 @@ const List: React.FC<Props> = ({list, setLists}) => {
   useClickOutside(formRef, () => setToggleForm(false))
   useClickOutside(settingsRef, () => setToggleSettingsMenu(false))
 
-  const tasksId = useMemo(() => list.items!!.map(task => task.id), [list.items])
+  const tasksId = useMemo(() => tasks.map(task => task.id), [tasks])
 
   if (isDragging){
     return (
@@ -67,8 +70,8 @@ const List: React.FC<Props> = ({list, setLists}) => {
         </div>
         <div className={styles.tasks}>
           {
-            list.items!!.map((task, idx) => (
-              <Task key={idx} task={task} setLists={setLists}/>
+            tasks.filter(task => task.listId === list.id).map((task, idx) => (
+              <Task key={idx} task={task} setTasks={setTasks}/>
             ))
           }
         </div>
@@ -83,7 +86,6 @@ const List: React.FC<Props> = ({list, setLists}) => {
     </div>
     )
   }
-
 
   const handleEditFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -121,17 +123,7 @@ const List: React.FC<Props> = ({list, setLists}) => {
 
   const handleFormSubmit = (e: FormEvent, inputValue: string) => {
     e.preventDefault()
-    setLists((prev) => 
-      prev.map((mapList) => {
-        if (mapList.id === list.id && inputValue){
-          // const newTaskId: number = mapList.items!!.length > 0 ? mapList.items!![mapList.items!!.length-1].id : 0
-          const uniqueId = createUniqueId()
-          const newTask: TaskType = {id: uniqueId, isActive: true, title: inputValue, listId: mapList.id, createdDate: Date.now(), isDeleted: false}
-          return {...mapList, items: [...mapList.items!!, newTask]}
-        }
-        return mapList
-      })
-    )
+    setTasks(tasks => [...tasks, {id: createUniqueId(), title: inputValue, listId: list.id, createdDate: Date.now()}])
     setToggleForm(false)
   }
 
@@ -167,8 +159,8 @@ const List: React.FC<Props> = ({list, setLists}) => {
         <div className={styles.tasks}>
           <SortableContext items={tasksId}>
             {
-              list.items!!.map((task, idx) => (
-                <Task key={idx} task={task} setLists={setLists}/>
+              tasks.filter(task => task.listId === list.id).map((task, idx) => (
+                <Task key={idx} task={task} setTasks={setTasks}/>
               ))
             }
           </SortableContext>

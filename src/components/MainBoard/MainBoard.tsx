@@ -22,9 +22,16 @@ const MainBoard = () => {
   useClickOutside(formRef, () => setToggleForm(false)) // close form when clicking form's outside custom hook
 
   const [lists, setLists] = useState<ListType[]>([
-    {id: "202cb962ac59075b964b07152d234b70", title: "To Do", isActive: true, items: [{id:"81dc9bdb52d04dc20036dbd8313ed055", title: "Learn Next.js", isActive: true, listId: "202cb962ac59075b964b07152d234b70"}, {id:"4297f44b13955235245b2497399d7a93", title: "Learn Docker", isActive: true, listId: "202cb962ac59075b964b07152d234b70"}]},
-    {id: "920992cdde70074f393b6f8da2eec0e1", title: "In Process", isActive: true, items: [{id:"84aad89ca24745cf5444ae924778d624", title: "Learn Redux Toolkit", isActive: true, listId: "920992cdde70074f393b6f8da2eec0e1"}]},
-    {id: "244961af66c224e66ed81810e6a7a9c4", title: "Completed", isActive: true, items: [{id:"45ba9d71baea885abee139ea5edf15d2", title: "Learn Tailwind.css", isActive: true, listId: "244961af66c224e66ed81810e6a7a9c4"}]}
+    {id: "202cb962ac59075b964b07152d234b70", title: "To Do"},
+    {id: "920992cdde70074f393b6f8da2eec0e1", title: "In Process",},
+    {id: "244961af66c224e66ed81810e6a7a9c4", title: "Completed",}
+  ])
+
+  const [tasks, setTasks] = useState<TaskType[]>([
+    {id:"81dc9bdb52d04dc20036dbd8313ed055", title: "Learn Next.js", listId: "202cb962ac59075b964b07152d234b70"},
+    {id:"4297f44b13955235245b2497399d7a93", title: "Learn Docker", listId: "202cb962ac59075b964b07152d234b70"},
+    {id:"84aad89ca24745cf5444ae924778d624", title: "Learn Redux Toolkit", listId: "920992cdde70074f393b6f8da2eec0e1"},
+    {id:"45ba9d71baea885abee139ea5edf15d2", title: "Learn Tailwind.css", listId: "244961af66c224e66ed81810e6a7a9c4"}
   ])
 
   const listsId = useMemo(() => lists.map(list => list.id), [lists]) 
@@ -42,10 +49,7 @@ const MainBoard = () => {
       const newList: ListType = {
         id: uniqueId,
         title: inputValue,
-        isActive: true,
         createdDate: Date.now(),
-        isDeleted: false,
-        items: []
       }
       if (!inputValue){
         return prev
@@ -54,10 +58,6 @@ const MainBoard = () => {
     })
     setToggleForm(false)
   }
-
-  useEffect(() => {
-    console.log(lists)
-  }, [lists])
   
   const sensors = useSensors(useSensor(PointerSensor, {
     activationConstraint: {
@@ -81,9 +81,6 @@ const MainBoard = () => {
   }
 
   const onDragEnd = (e: DragEndEvent) => {
-    setActiveList(null)
-    setActiveTask(null)
-
     const {active, over} = e // active and over lists
 
     if (active.data.current?.type === "Task"){
@@ -119,24 +116,26 @@ const MainBoard = () => {
 
     const isActiveATask = active.data.current?.type === "Task"
     const isOverATask = over.data.current?.type === "Task"
-
-    if (!isActiveATask) return
-
-    // I'm dropping a task over anohter task
+    
+    // dropping a task over another task
     if (isActiveATask && isOverATask){
-      setLists(prev => 
-        prev.map(list => {
-          const activeTaskIndex = list.items!!.findIndex(task => task.id === activeId)
-          const overTaskIndex = list.items!!.findIndex(task => task.id === overId)
-          return {...list, items: arrayMove(list.items!!, activeTaskIndex, overTaskIndex)}
-        })
-      )
+      setTasks((tasks) => {
+        const activeIndex = tasks.findIndex(task => task.id === activeId)
+        const overIndex = tasks.findIndex(task => task.id === overId)
+        tasks[activeIndex].listId = tasks[overIndex].listId
+        return arrayMove(tasks, activeIndex, overIndex)
+      })
     }
 
-    const isOverAList = over.data.current?.type === "List"
-    
+    // dropping a task over a list
+    if (isActiveATask && !isOverATask){
+      setTasks((tasks) => {
+        const activeIndex = tasks.findIndex(task => task.id === activeId)
+        tasks[activeIndex].listId = over.id.toString()
+        return arrayMove(tasks, activeIndex, activeIndex)
+      })
+    }
   }
-
 
   return (
     <DndContext sensors={sensors} onDragStart={onDragStart} onDragEnd={onDragEnd} onDragOver={onDragOver}>
@@ -145,7 +144,7 @@ const MainBoard = () => {
           <SortableContext items={listsId}>
             {
               lists.map((list, idx) => (
-                <List key={idx} list={list} setLists={setLists}/>
+                <List key={idx} list={list} setLists={setLists} tasks={tasks} setTasks={setTasks}/>
               ))
             }
           </SortableContext>
@@ -164,12 +163,14 @@ const MainBoard = () => {
             <List 
               list={activeList} 
               setLists={setLists}
+              tasks={tasks} 
+              setTasks={setTasks}
             />
           )}
           {activeTask && (
             <Task
               task={activeTask}
-              setLists={setLists}
+              setTasks={setTasks}
             />
           )}
         </DragOverlay>, 
