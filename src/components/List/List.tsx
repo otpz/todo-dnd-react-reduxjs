@@ -1,4 +1,4 @@
-import React, { FormEvent, useRef, useState } from 'react'
+import React, { FormEvent, useMemo, useRef, useState } from 'react'
 import { ListType } from '../../types/ListType'
 import { TaskType } from '../../types/TaskType';
 import { BsThreeDots } from "react-icons/bs";
@@ -7,7 +7,7 @@ import Task from '../Task/Task';
 import ToggleForm from '../ToggleForm/ToggleForm';
 import { useClickOutside } from '../../hooks/useClickOutside';
 import styles from './style.module.css'
-import { useSortable } from '@dnd-kit/sortable';
+import { SortableContext, useSortable } from '@dnd-kit/sortable';
 
 import {CSS} from "@dnd-kit/utilities"
 import { createUniqueId } from '../../helpers/createUniqueId';
@@ -52,6 +52,8 @@ const List: React.FC<Props> = ({list, setLists}) => {
   })
   useClickOutside(formRef, () => setToggleForm(false))
   useClickOutside(settingsRef, () => setToggleSettingsMenu(false))
+
+  const tasksId = useMemo(() => list.items!!.map(task => task.id), [list.items])
 
   if (isDragging){
     return (
@@ -133,6 +135,7 @@ const List: React.FC<Props> = ({list, setLists}) => {
     setToggleForm(false)
   }
 
+  
   return (
     <div ref={setNodeRef} style={dndAnimationStyles} className={styles.list_container}>
       <div className={styles.container}>
@@ -162,11 +165,13 @@ const List: React.FC<Props> = ({list, setLists}) => {
           </div>}
         </div>
         <div className={styles.tasks}>
-          {
-            list.items!!.map((task, idx) => (
-              <Task key={idx} task={task} setLists={setLists}/>
-            ))
-          }
+          <SortableContext items={tasksId}>
+            {
+              list.items!!.map((task, idx) => (
+                <Task key={idx} task={task} setLists={setLists}/>
+              ))
+            }
+          </SortableContext>
         </div>
         <div className={styles.bottom_form}>
           {

@@ -4,6 +4,8 @@ import { TaskType } from '../../types/TaskType'
 import { BsFillTrash3Fill } from "react-icons/bs"
 import { ListType } from '../../types/ListType'
 import { useClickOutside } from '../../hooks/useClickOutside'
+import { useSortable } from '@dnd-kit/sortable'
+import {CSS} from "@dnd-kit/utilities"
 
 interface Props {
   task: TaskType
@@ -20,6 +22,23 @@ const Task:React.FC<Props> = ({task, setLists}) => {
     setToggleEditTask(false)
     editFormRef.current?.requestSubmit()
   })
+
+  //for sortable context.
+  const {setNodeRef, attributes, listeners, transform, transition, isDragging } = useSortable({
+    id: task.id,
+    data: {
+      type: "Task",
+      task,
+    },
+    animateLayoutChanges: () => false,
+    disabled: toggleEditTask
+  })
+
+  //for animation styling
+  const dndAnimationStyles = {
+    transition,
+    transform: CSS.Transform.toString(transform)
+  }
 
   const handleEditFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -56,8 +75,18 @@ const Task:React.FC<Props> = ({task, setLists}) => {
     setToggleEditTask(prev => !prev)
   }
 
+
+  if (isDragging){
+    return <div ref={setNodeRef} style={dndAnimationStyles} {...attributes} {...listeners} className={styles.container_opacity}>
+      <div className={styles.title}>{task.title}</div> :
+      <div className={styles.icon_box}>
+        <BsFillTrash3Fill className={styles.trash}/>
+      </div>
+    </div>
+  }
+
   return (
-    <div className={styles.container}>
+    <div ref={setNodeRef} style={dndAnimationStyles} {...attributes} {...listeners} className={styles.container}>
       {
         toggleEditTask === false ?
         <div className={styles.title} onClick={handleEditTaskForm}>{task.title}</div> :
