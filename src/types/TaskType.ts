@@ -1,6 +1,6 @@
 export type TaskType = {
-    id: number,
-    listId: number,
+    id: string,
+    listId: string,
     title: string,
     isActive: boolean,
     isDeleted?: boolean,

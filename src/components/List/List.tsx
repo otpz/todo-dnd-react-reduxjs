@@ -10,6 +10,7 @@ import styles from './style.module.css'
 import { useSortable } from '@dnd-kit/sortable';
 
 import {CSS} from "@dnd-kit/utilities"
+import { createUniqueId } from '../../helpers/createUniqueId';
 
 interface Props {
   list: ListType
@@ -27,12 +28,13 @@ const List: React.FC<Props> = ({list, setLists}) => {
   const [toggleEditList, setToggleEditList] = useState<boolean>(false)
 
   //for sortable context.
-  const {setNodeRef, attributes, listeners, transform, transition } = useSortable({
+  const {setNodeRef, attributes, listeners, transform, transition, isDragging } = useSortable({
     id: list.id,
     data: {
       type: "List",
-      list
-    }
+      list,
+    },
+    animateLayoutChanges: () => false
   })
 
   //for animation styling
@@ -49,6 +51,36 @@ const List: React.FC<Props> = ({list, setLists}) => {
   })
   useClickOutside(formRef, () => setToggleForm(false))
   useClickOutside(settingsRef, () => setToggleSettingsMenu(false))
+
+  if (isDragging){
+    return (
+      <div ref={setNodeRef} style={dndAnimationStyles} className={styles.list_container}>
+      <div className={styles.container_opacity}>
+        <div className={styles.header} {...attributes} {...listeners}>
+          <p>{list.title}</p>
+          <div className={styles.settings}>
+            <BsThreeDots />
+          </div>
+        </div>
+        <div className={styles.tasks}>
+          {
+            list.items!!.map((task, idx) => (
+              <Task key={idx} task={task} setLists={setLists}/>
+            ))
+          }
+        </div>
+        <div className={styles.bottom_form}>
+          {
+            <button className={styles.button}>
+            + Add new task
+            </button> 
+          }
+        </div>
+      </div>
+    </div>
+    )
+  }
+
 
   const handleEditFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -89,8 +121,9 @@ const List: React.FC<Props> = ({list, setLists}) => {
     setLists((prev) => 
       prev.map((mapList) => {
         if (mapList.id === list.id && inputValue){
-          const newTaskId: number = mapList.items!!.length > 0 ? mapList.items!![mapList.items!!.length-1].id : 0
-          const newTask: TaskType = {id: newTaskId+1, isActive: true, title: inputValue, listId: mapList.id, createdDate: Date.now(), isDeleted: false}
+          // const newTaskId: number = mapList.items!!.length > 0 ? mapList.items!![mapList.items!!.length-1].id : 0
+          const uniqueId = createUniqueId()
+          const newTask: TaskType = {id: uniqueId, isActive: true, title: inputValue, listId: mapList.id, createdDate: Date.now(), isDeleted: false}
           return {...mapList, items: [...mapList.items!!, newTask]}
         }
         return mapList
@@ -145,7 +178,6 @@ const List: React.FC<Props> = ({list, setLists}) => {
         </div>
       </div>
     </div>
-    
   )
 }
 

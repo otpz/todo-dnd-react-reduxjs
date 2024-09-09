@@ -1,7 +1,7 @@
 import { TaskType } from "./TaskType"
 
 export type ListType = {
-    id: number,
+    id: string,
     title: string,
     isActive: boolean,
     isDeleted?: boolean,

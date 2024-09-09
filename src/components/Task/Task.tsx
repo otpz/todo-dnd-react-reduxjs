@@ -39,7 +39,7 @@ const Task:React.FC<Props> = ({task, setLists}) => {
     );
   }
 
-  const deleteTaskById = (taskId: number, listId: number) => {
+  const deleteTaskById = (taskId: string, listId: string) => {
     setLists((prev) => 
       prev.map((list) => {
         if (list.id === listId){

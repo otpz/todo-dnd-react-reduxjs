@@ -21,6 +21,21 @@
     border-radius: 12px;
 }
 
+.container_opacity{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 14px;
+    font-weight: 600;
+    text-align: left;
+    padding: 10px;
+    background-color: #101204;
+    color: rgb(182, 194, 207);
+    border-radius: 12px;
+    opacity: 0.2;
+}
+
 .header{
     width: 100%;
     height: 32px;
