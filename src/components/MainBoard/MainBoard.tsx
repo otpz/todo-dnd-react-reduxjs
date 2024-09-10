@@ -140,6 +140,10 @@ const MainBoard = () => {
   return (
     <DndContext sensors={sensors} onDragStart={onDragStart} onDragEnd={onDragEnd} onDragOver={onDragOver}>
       <div className={styles.container}>
+        <div className={styles.board_header}>
+          <span>Main Board</span>
+          <span>Board Header</span>
+        </div>
         <div className={styles.list}>
           <SortableContext items={listsId}>
             {

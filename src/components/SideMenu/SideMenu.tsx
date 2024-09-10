@@ -2,9 +2,8 @@ import React, { useState } from 'react';
 import { Sidebar, Menu, MenuItem, MenuItemStyles, } from 'react-pro-sidebar';
 import { SidebarHeader } from '../SidebarHeader/SidebarHeader';
 import styles from './style.module.css'
-
 import { BsFillArrowLeftCircleFill, BsFillArrowRightCircleFill } from "react-icons/bs";
-
+import { RiTodoLine } from "react-icons/ri";
 const themes = {
     sidebar: {
         backgroundColor: '#1D1E28',
@@ -17,7 +16,6 @@ const themes = {
             backgroundColor: '#41424A',
             color: '#9FADBC',
         },
-        
     },
 };
 
@@ -45,7 +43,7 @@ const SideMenu: React.FC = () => {
   };
 
   return (
-    <div style={{ display: 'flex', height: '100%'}}>
+    <div style={{ display: 'flex', height: '100%', overflow: "clip"}}>
       <Sidebar
         collapsed={collapsed}
         toggled={toggled}
@@ -58,18 +56,19 @@ const SideMenu: React.FC = () => {
             color: themes.sidebar.color,
         }}
       >
-        <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
-          <SidebarHeader rtl={false} style={{ borderTop: "1px solid #363738", borderBottom: "1px solid #363738", marginBottom: "24px" }} />
+        <div style={{ display: 'flex', flexDirection: 'column', height: '100%', position: "relative" }}>
+          <SidebarHeader rtl={false} style={{ borderBottom: "1px solid #363738", marginBottom: "24px" }} />
           <div className={styles.collapse_button} onClick={() => setCollapsed(prev => !prev)}>
             {
-                collapsed === true ? 
-                <BsFillArrowRightCircleFill className={styles.no_collapsed_icon}/> :
-                <BsFillArrowLeftCircleFill className={styles.collapsed_icon}/> 
+              collapsed === true ? 
+              <BsFillArrowRightCircleFill className={styles.no_collapsed_icon}/> :
+              <BsFillArrowLeftCircleFill className={styles.collapsed_icon}/> 
             }
           </div>
           <div style={{ flex: 1, marginBottom: '32px' }}>
-            <div className={styles.fontFamily} style={{ padding: '0 20px', marginBottom: '8px', fontSize: "18px", fontWeight:"bold"}}>
-              My Boards
+            <div className={styles.fontFamily} style={{ padding: '0 20px', marginBottom: '8px', fontSize: "18px", fontWeight:"bold", display: !collapsed ? "flex" : "none", flexDirection: "row", alignItems: "center"}}>
+              <RiTodoLine style={{marginRight: "10px"}}/>
+              <span>My Boards</span>
             </div>
             <Menu menuItemStyles={menuItemStyles}>
                 <MenuItem active={true}>Main Board</MenuItem>
