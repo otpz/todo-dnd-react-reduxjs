@@ -1,8 +1,55 @@
 .container{
     display: flex;
-    max-width: 300px;
+    flex-direction: column;
+    max-width: 260px;
+    max-height: 100%;   
+    height: 100%;
+    border: none;
+    background-color: #1F1E27;
+}
+
+.container aside{
+    border-right: 1px solid rgb(128, 128, 128, 0.3);
+}
+
+.sidebar{
+    width: 100%;
+    height: 100%;
+}
+
+.sidebar_menu{
+    width: 100%;
     max-height: 100%;
     height: 100%;
-    background-color: #1D2125;
-    border-top: 1px solid rgb(50, 50, 50);
+    background-color: #1F1E27;
+    border-top: 1px solid #363738;
+    border-right: 1px solid #47474766;
+}
+
+.fontFamily{
+    font-family: "Segoe UI", Arial, sans-serif;
+}
+
+
+.collapse_button{
+    width: 24px;
+    height: 24px;
+    color: rgb(0, 0, 0);
+    margin-left: auto;
+    display: grid;
+    place-items: center;
+    font-size: 12px;
+    border-radius: 4px;
+    transition: ease-in-out all 0.15s;
+    background-color: #3b3a41;
+    
+}
+
+.collapse_button .no_collapsed_icon,
+.collapse_button .collapsed_icon{
+    width: 16px;
+    height: 16px;
+    font-size: 16px;
+    font-weight: bold;
+    color: white;
 }

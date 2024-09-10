@@ -1,10 +1,13 @@
 import styles from './styles.module.css'
 import SearchForm from '../SearchForm/SearchForm';
+import { BsCardChecklist  } from "react-icons/bs";
 
 const Header = () => {
   return (
     <nav className={styles.container}>
-        <div className={styles.logo}>Trello</div>
+        <div className={styles.logo}>
+          <BsCardChecklist className={styles.logo_icon}/>
+          <span>Trello</span></div>
         <SearchForm/>
         <ul className={styles.nav_list}>
             <li className={styles.list_item}>

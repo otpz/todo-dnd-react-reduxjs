@@ -1,28 +1,85 @@
-import { useState } from 'react'
-import styles from "./style.module.css"
-import { Sidebar, Menu, MenuItem, SubMenu } from 'react-pro-sidebar'
+import React, { useState } from 'react';
+import { Sidebar, Menu, MenuItem, MenuItemStyles, } from 'react-pro-sidebar';
+import { SidebarHeader } from '../SidebarHeader/SidebarHeader';
+import styles from './style.module.css'
 
-const SideMenu = () => {
+import { BsFillArrowLeftCircleFill, BsFillArrowRightCircleFill } from "react-icons/bs";
 
-    const [collapsed, setCollapsed] = useState(false)
+const themes = {
+    sidebar: {
+        backgroundColor: '#1D1E28',
+        color: '#9FADBC',
+    },
+    menu: {
+        menuContent: '#1D1E28',
+        innerHeight: "32px",
+        hover: {
+            backgroundColor: '#41424A',
+            color: '#9FADBC',
+        },
+        
+    },
+};
 
-    return (
-        <div className={styles.container}>
-            <Sidebar collapsed={collapsed} className={styles.sidebar}>
-                <main className={styles.sidebar_header}>
-                    <button className="sb-button" onClick={() => setCollapsed(!collapsed)}>
-                        Collapse
-                    </button>
-                </main>
-                <Menu className={styles.sidebar_menu}>
-                    <MenuItem className={styles.menu_item}>Documentation</MenuItem>
-                    <MenuItem className={styles.menu_item}>Calendar</MenuItem>
-                    <MenuItem className={styles.menu_item}>E-commerce</MenuItem>
-                    <MenuItem className={styles.menu_item}>Examples</MenuItem>
-                </Menu>
-            </Sidebar>
+const SideMenu: React.FC = () => {
+  const [collapsed, setCollapsed] = useState(false);
+  const [toggled, setToggled] = useState(false);
+  const [broken, setBroken] = useState(false);
+
+  const menuItemStyles: MenuItemStyles = {
+    root: {
+        fontSize: '14px',
+        fontWeight: 400,
+        height: "32px"
+    },
+    button: {
+        height: "32px",
+        '&:hover': {
+            backgroundColor: themes.menu.hover.backgroundColor,
+            color: themes.menu.hover.color,
+        },  
+    },
+    label: ({ open }) => ({
+        fontWeight: open ? 600 : undefined,
+    }),
+  };
+
+  return (
+    <div style={{ display: 'flex', height: '100%'}}>
+      <Sidebar
+        collapsed={collapsed}
+        toggled={toggled}
+        onBackdropClick={() => setToggled(false)}
+        onBreakPoint={setBroken}
+        breakPoint="md"
+        backgroundColor={themes.sidebar.backgroundColor}
+        rootStyles={{
+            borderRight: "1px solid #47474766",
+            color: themes.sidebar.color,
+        }}
+      >
+        <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+          <SidebarHeader rtl={false} style={{ borderTop: "1px solid #363738", borderBottom: "1px solid #363738", marginBottom: "24px" }} />
+          <div className={styles.collapse_button} onClick={() => setCollapsed(prev => !prev)}>
+            {
+                collapsed === true ? 
+                <BsFillArrowRightCircleFill className={styles.no_collapsed_icon}/> :
+                <BsFillArrowLeftCircleFill className={styles.collapsed_icon}/> 
+            }
+          </div>
+          <div style={{ flex: 1, marginBottom: '32px' }}>
+            <div className={styles.fontFamily} style={{ padding: '0 20px', marginBottom: '8px', fontSize: "18px", fontWeight:"bold"}}>
+              My Boards
+            </div>
+            <Menu menuItemStyles={menuItemStyles}>
+                <MenuItem active={true}>Main Board</MenuItem>
+                <MenuItem>Second</MenuItem>
+            </Menu>
+          </div>
         </div>
-    )
-}
+      </Sidebar>
+    </div>
+  );
+};
 
 export default SideMenu
