@@ -69,7 +69,7 @@ const Task:React.FC<Props> = ({task, setTasks}) => {
     <div ref={setNodeRef} style={dndAnimationStyles} {...attributes} {...listeners} className={styles.container}>
       {
         toggleEditTask === false ?
-        <div className={styles.title} onClick={handleEditTaskForm}>{task.title}</div> :
+        <p className={styles.title} onClick={handleEditTaskForm}>{task.title}</p> :
         <form onSubmit={handleEditFormSubmit} ref={editFormRef}>
           <input autoComplete='off' autoFocus id='list_title_edit_input' type="text" value={editInput} onChange={(e) => setEditInput(e.target.value)} />
         </form>
