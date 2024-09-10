@@ -31,7 +31,7 @@ const List: React.FC<Props> = ({list, setLists, tasks, setTasks}) => {
   const [toggleEditList, setToggleEditList] = useState<boolean>(false)
 
   //for sortable context.
-  const {setNodeRef, attributes, listeners, transform, transition, isDragging } = useSortable({
+  const {setNodeRef, attributes, listeners, transform, transition, isDragging, active, over } = useSortable({
     id: list.id,
     data: {
       type: "List",
@@ -57,6 +57,35 @@ const List: React.FC<Props> = ({list, setLists, tasks, setTasks}) => {
   useClickOutside(settingsRef, () => setToggleSettingsMenu(false))
 
   const tasksId = useMemo(() => tasks.map(task => task.id), [tasks])
+
+  if (active?.data.current?.type === "Task" && over?.data.current?.type === "Task" && over?.data.current?.task.listId === list.id){
+    return (
+      <div ref={setNodeRef} style={dndAnimationStyles} className={styles.list_container}>
+      <div className={styles.container_border}>
+        <div className={styles.header} {...attributes} {...listeners}>
+          <p>{list.title}</p>
+          <div className={styles.settings}>
+            <BsThreeDots />
+          </div>
+        </div>
+        <div className={styles.tasks}>
+          {
+            tasks.filter(task => task.listId === list.id).map((task, idx) => (
+              <Task key={idx} task={task} setTasks={setTasks}/>
+            ))
+          }
+        </div>
+        <div className={styles.bottom_form}>
+          {
+            <button className={styles.button}>
+            + Add new task
+            </button> 
+          }
+        </div>
+      </div>
+    </div>
+    )
+  }
 
   if (isDragging){
     return (
