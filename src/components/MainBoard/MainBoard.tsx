@@ -11,8 +11,13 @@ import {arrayMove, SortableContext} from "@dnd-kit/sortable"
 import { createPortal } from 'react-dom'
 import { createUniqueId } from '../../helpers/createUniqueId'
 import Task from '../Task/Task'
+import { BoardType } from '../../types/BoardType'
 
-const MainBoard = () => {
+interface Props {
+  board: BoardType
+}
+
+const MainBoard:React.FC<Props> = ({board}) => {
   const formRef = useRef<HTMLFormElement>(null); // add new list form ref
   const [toggleForm, setToggleForm] = useState<boolean>(false)
   
@@ -22,9 +27,9 @@ const MainBoard = () => {
   useClickOutside(formRef, () => setToggleForm(false)) // close form when clicking form's outside custom hook
 
   const [lists, setLists] = useState<ListType[]>([
-    {id: "202cb962ac59075b964b07152d234b70", title: "To Do"},
-    {id: "920992cdde70074f393b6f8da2eec0e1", title: "In Process",},
-    {id: "244961af66c224e66ed81810e6a7a9c4", title: "Completed",}
+    {id: "202cb962ac59075b964b07152d234b70", boardId: "6b57d7aa641abf9e3befc4f3bed4aa1e", title: "To Do"},
+    {id: "920992cdde70074f393b6f8da2eec0e1", boardId: "6b57d7aa641abf9e3befc4f3bed4aa1e", title: "In Process",},
+    {id: "244961af66c224e66ed81810e6a7a9c4", boardId: "6b57d7aa641abf9e3befc4f3bed4aa1e", title: "Completed",}
   ])
 
   const [tasks, setTasks] = useState<TaskType[]>([
@@ -48,6 +53,7 @@ const MainBoard = () => {
       const uniqueId = createUniqueId()
       const newList: ListType = {
         id: uniqueId,
+        boardId: "6b57d7aa641abf9e3befc4f3bed4aa1e",
         title: inputValue,
         createdDate: Date.now(),
       }
@@ -141,13 +147,13 @@ const MainBoard = () => {
     <DndContext sensors={sensors} onDragStart={onDragStart} onDragEnd={onDragEnd} onDragOver={onDragOver}>
       <div className={styles.container}>
         <div className={styles.board_header}>
-          <span>Main Board</span>
-          <span>Board Header</span>
+          <span>{board.title}</span>
+          <span>{board.title} - Board Header</span>
         </div>
         <div className={styles.list}>
           <SortableContext items={listsId}>
             {
-              lists.map((list, idx) => (
+              lists.filter(list => list.boardId === board.id).map((list, idx) => (
                 <List key={idx} list={list} setLists={setLists} tasks={tasks} setTasks={setTasks}/>
               ))
             }

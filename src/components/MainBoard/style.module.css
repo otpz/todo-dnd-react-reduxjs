@@ -63,6 +63,7 @@
 
 .control{
     max-width: 270px;
+    width: 270px;
     min-height: 40px;
     max-height: 109px;
 }
