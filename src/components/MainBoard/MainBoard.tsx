@@ -53,7 +53,7 @@ const MainBoard:React.FC<Props> = ({board}) => {
       const uniqueId = createUniqueId()
       const newList: ListType = {
         id: uniqueId,
-        boardId: "6b57d7aa641abf9e3befc4f3bed4aa1e",
+        boardId: board.id,
         title: inputValue,
         createdDate: Date.now(),
       }

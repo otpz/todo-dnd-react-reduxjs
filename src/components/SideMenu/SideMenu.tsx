@@ -4,6 +4,12 @@ import { SidebarHeader } from '../SidebarHeader/SidebarHeader';
 import styles from './style.module.css'
 import { BsFillArrowLeftCircleFill, BsFillArrowRightCircleFill } from "react-icons/bs";
 import { RiTodoLine } from "react-icons/ri";
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../app/store';
+import { BoardType } from '../../types/BoardType';
+import { updateActiveBoardId } from '../../features/activeBoard/activeBoardSlice';
+
+
 const themes = {
     sidebar: {
         backgroundColor: '#1D1E28',
@@ -54,6 +60,10 @@ const SideMenu: React.FC = () => {
     }),
   };
 
+  const dispatch = useDispatch()
+  const activeBoardId = useSelector((state: RootState) => state.activeBoard.id)
+  const boards: BoardType[] = useSelector((state: RootState) => state.boards)
+
   return (
     <div style={{ display: 'flex', height: '100%', overflow: "clip"}}>
       <Sidebar
@@ -83,8 +93,17 @@ const SideMenu: React.FC = () => {
               <span>My Boards</span>
             </div>
             <Menu menuItemStyles={menuItemStyles}>
-                <MenuItem active={true}>Main Board</MenuItem>
-                <MenuItem>Second</MenuItem>
+                {
+                  boards.map((board, idx) => (
+                    <MenuItem 
+                      key={idx}
+                      onClick={() => dispatch(updateActiveBoardId(board.id))}
+                      active={activeBoardId === board.id ? true : false}
+                    >
+                      {board.title}
+                    </MenuItem>
+                  ))
+                }
             </Menu>
           </div>
         </div>
