@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Sidebar, Menu, MenuItem, MenuItemStyles, } from 'react-pro-sidebar';
+import { Sidebar, Menu, MenuItem, MenuItemStyles, menuClasses, } from 'react-pro-sidebar';
 import { SidebarHeader } from '../SidebarHeader/SidebarHeader';
 import styles from './style.module.css'
 import { BsFillArrowLeftCircleFill, BsFillArrowRightCircleFill } from "react-icons/bs";
@@ -12,6 +12,10 @@ const themes = {
     menu: {
         menuContent: '#1D1E28',
         innerHeight: "32px",
+        active: {
+          backgroundColor: '#41424A',
+          color: '#9FADBC',
+        },
         hover: {
             backgroundColor: '#41424A',
             color: '#9FADBC',
@@ -28,10 +32,18 @@ const SideMenu: React.FC = () => {
     root: {
         fontSize: '14px',
         fontWeight: 400,
-        height: "32px"
+        height: "32px",
+        '&:active': {
+            backgroundColor: themes.menu.hover.backgroundColor,
+            color: themes.menu.hover.color,
+        },
     },
     button: {
         height: "32px",
+        [`&.${menuClasses.active}`]: {
+          color: themes.menu.active.color,
+          backgroundColor: themes.menu.active.backgroundColor,
+        },
         '&:hover': {
             backgroundColor: themes.menu.hover.backgroundColor,
             color: themes.menu.hover.color,
