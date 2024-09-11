@@ -1,17 +1,20 @@
 import { FormEvent, useEffect, useMemo, useRef, useState } from 'react'
 import styles from './style.module.css'
 import List from '../List/List'
+import Task from '../Task/Task'
 import ToggleForm from '../ToggleForm/ToggleForm'
 import { ListType } from '../../types/ListType'
 import { TaskType } from '../../types/TaskType'
+import { BoardType } from '../../types/BoardType'
 import { useClickOutside } from '../../hooks/useClickOutside'
 
 import {DndContext, DragEndEvent, DragOverEvent, DragOverlay, DragStartEvent, PointerSensor, useSensor, useSensors} from "@dnd-kit/core"
 import {arrayMove, SortableContext} from "@dnd-kit/sortable"
+
 import { createPortal } from 'react-dom'
 import { createUniqueId } from '../../helpers/createUniqueId'
-import Task from '../Task/Task'
-import { BoardType } from '../../types/BoardType'
+import { FaFlipboard, FaRegListAlt, FaRegStar, FaStar} from "react-icons/fa";
+
 
 interface Props {
   board: BoardType
@@ -147,8 +150,7 @@ const MainBoard:React.FC<Props> = ({board}) => {
     <DndContext sensors={sensors} onDragStart={onDragStart} onDragEnd={onDragEnd} onDragOver={onDragOver}>
       <div className={styles.container}>
         <div className={styles.board_header}>
-          <span>{board.title}</span>
-          <span>{board.title} - Board Header</span>
+          
         </div>
         <div className={styles.list}>
           <SortableContext items={listsId}>
