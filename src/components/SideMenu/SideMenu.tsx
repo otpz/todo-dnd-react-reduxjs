@@ -158,7 +158,7 @@ const SideMenu: React.FC = () => {
                     </MenuItem>
                   ))
                 }
-                {toggleSettingsMenu && <ToggleForm formRef={settingsRef} handleFormSubmit={handleFormSubmit} handleToggleForm={handleToggleForm} placeholder={"Enter a board name"}/>}
+                {toggleSettingsMenu && <ToggleForm formRef={settingsRef} handleFormSubmit={handleFormSubmit} handleToggleForm={handleToggleForm} placeholder={"Enter a board name"} boardForm={true}/>}
             </Menu>
           </div>
         </div>

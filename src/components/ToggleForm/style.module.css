@@ -5,6 +5,7 @@
     flex-direction: column;
     background-color: #101204;
     border-radius: 12px;
+    padding: 10px;
 }
 
 .toggle_form input{
