@@ -1,4 +1,4 @@
-import { FormEvent, useEffect, useMemo, useRef, useState } from 'react'
+import { FormEvent, useMemo, useRef, useState } from 'react'
 import styles from './style.module.css'
 import List from '../List/List'
 import Task from '../Task/Task'
@@ -13,7 +13,9 @@ import {arrayMove, SortableContext} from "@dnd-kit/sortable"
 
 import { createPortal } from 'react-dom'
 import { createUniqueId } from '../../helpers/createUniqueId'
-import { FaFlipboard, FaRegListAlt, FaRegStar, FaStar} from "react-icons/fa";
+import { FaFlipboard, FaRegListAlt, FaRegStar, FaStar, FaCalendarAlt } from "react-icons/fa";
+import { useDispatch } from 'react-redux'
+import { updateFavoiteById } from '../../features/boards/boardsSlice'
 
 
 interface Props {
@@ -28,6 +30,7 @@ const MainBoard:React.FC<Props> = ({board}) => {
   const [activeTask, setActiveTask] = useState<TaskType | null>(null)
 
   useClickOutside(formRef, () => setToggleForm(false)) // close form when clicking form's outside custom hook
+  const dispatch = useDispatch()
 
   const [lists, setLists] = useState<ListType[]>([
     {id: "202cb962ac59075b964b07152d234b70", boardId: "6b57d7aa641abf9e3befc4f3bed4aa1e", title: "To Do"},
@@ -146,11 +149,45 @@ const MainBoard:React.FC<Props> = ({board}) => {
     }
   }
 
+  const handleToggleBoardFavorite = () => {
+    dispatch(updateFavoiteById(board.id)) // toggle the board's favorite state
+  }
+
+  const convertDate = (date: number) => {
+    return new Date(date).toLocaleDateString("en-EN", {dateStyle: 'medium'});
+  }
+
   return (
     <DndContext sensors={sensors} onDragStart={onDragStart} onDragEnd={onDragEnd} onDragOver={onDragOver}>
       <div className={styles.container}>
         <div className={styles.board_header}>
-          
+          <div className={styles.board_left}>
+            <div className={styles.board_item}>
+              <FaFlipboard className={styles.title_icon}/>
+              <span className={styles.board_title}>{board.title}</span>
+            </div>
+            <div onClick={handleToggleBoardFavorite} className={styles.board_item}>
+              {
+                board.isFavorite ? <FaStar className={styles.fav_icon}/> : <FaRegStar className={styles.fav_icon}/>  
+              }
+            </div>
+          </div>
+          <div className={styles.board_right}>
+            <div className={styles.board_item}>
+                <FaRegListAlt className={styles.board_icon}/>
+                <span className={styles.board_span}>
+                   {
+                    lists.filter(list => list.boardId === board.id).length
+                   } list available
+                </span>
+            </div>
+            <div className={styles.board_item}>
+                <FaCalendarAlt className={styles.board_icon}/>
+                <span className={styles.board_span}>
+                  Created Date: {convertDate(board.createdDate!!)}
+                </span>
+            </div>
+          </div>
         </div>
         <div className={styles.list}>
           <SortableContext items={listsId}>

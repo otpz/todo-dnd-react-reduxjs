@@ -12,15 +12,75 @@
 .board_header{
   width: 100%;
   min-height: 64px;
-  background-color: rgba(0, 0, 0, 0.25);
+  background-color: rgba(0, 0, 0, 0.2);
   backdrop-filter: blur(10px);
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding-left: 10px;
-  padding-right: 20px;
+  padding-right: 10px;
   color: white;
 }
+
+.board_right,
+.board_left{
+  min-width: 300px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.board_right{
+  justify-content: flex-end;
+}
+
+.board_item{
+  padding: 0 10px;
+  min-height:32px;
+  margin-right: 5px;
+  display: flex;
+  align-items: center;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.board_item:hover{
+  background-color: rgba(255, 255, 255, 0.25);
+}
+
+.board_title{
+  font-size: 18px;
+  font-weight: 700;
+  color: white;
+  line-height: 32px;
+  margin-left: 8px;
+  vertical-align: bottom;
+}
+
+.title_icon{
+  margin-top: 1px;
+  font-size: 16px;
+  font-weight: 700;
+  color: white;
+  line-height: 32px;
+  vertical-align: middle;
+}
+
+.board_span{
+  font-size: 14px;
+  font-weight: 500;
+  color: white;
+}
+
+.board_icon{
+  font-size: 16px;
+  margin-top: 1px;
+  margin-right: 6px;
+}
+
+
+
+
 
 .list{
   padding: 10px;
