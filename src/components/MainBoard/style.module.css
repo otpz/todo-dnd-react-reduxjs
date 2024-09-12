@@ -24,7 +24,7 @@
 
 .board_right,
 .board_left{
-  min-width: 300px;
+  /* min-width: 300px; */
   height: 100%;
   display: flex;
   align-items: center;
@@ -36,7 +36,7 @@
 
 .board_item{
   padding: 0 10px;
-  min-height:32px;
+  min-height: 32px;
   margin-right: 5px;
   display: flex;
   align-items: center;
@@ -55,6 +55,22 @@
   line-height: 32px;
   margin-left: 8px;
   vertical-align: bottom;
+  max-width: 400px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.board_title_input{
+  font-size: 18px;
+  font-weight: 700;
+  color: white;
+  margin-left: 8px;
+  vertical-align: bottom;
+  border: none;
+  outline: none;
+  background-color: transparent;
+  font-family: "Segoe UI", Arial, sans-serif;
 }
 
 .title_icon{
@@ -77,10 +93,6 @@
   margin-top: 1px;
   margin-right: 6px;
 }
-
-
-
-
 
 .list{
   padding: 10px;

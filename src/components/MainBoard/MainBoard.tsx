@@ -15,7 +15,8 @@ import { createPortal } from 'react-dom'
 import { createUniqueId } from '../../helpers/createUniqueId'
 import { FaFlipboard, FaRegListAlt, FaRegStar, FaStar, FaCalendarAlt } from "react-icons/fa";
 import { useDispatch } from 'react-redux'
-import { updateFavoiteById } from '../../features/boards/boardsSlice'
+import { updateFavoiteById, updateTitleById } from '../../features/boards/boardsSlice'
+import { updateActiveBoardId } from '../../features/activeBoard/activeBoardSlice'
 
 
 interface Props {
@@ -25,9 +26,10 @@ interface Props {
 const MainBoard:React.FC<Props> = ({board}) => {
   const formRef = useRef<HTMLFormElement>(null); // add new list form ref
   const [toggleForm, setToggleForm] = useState<boolean>(false)
-  
   const [activeList, setActiveList] = useState<ListType | null>(null)
   const [activeTask, setActiveTask] = useState<TaskType | null>(null)
+  const [boardTitle, setBoardTitle] = useState<string>("")
+  const [toggleEditTitle, setToggleEditTitle] = useState<boolean>(false)
 
   useClickOutside(formRef, () => setToggleForm(false)) // close form when clicking form's outside custom hook
   const dispatch = useDispatch()
@@ -157,14 +159,30 @@ const MainBoard:React.FC<Props> = ({board}) => {
     return new Date(date).toLocaleDateString("en-EN", {dateStyle: 'medium'});
   }
 
+  const handleEditTitleSubmit = (e:  React.FocusEvent<HTMLInputElement, Element>) => {
+    e.preventDefault()
+    if (!boardTitle){
+      setToggleEditTitle(false)
+      return
+    }
+    dispatch(updateTitleById([board.id, boardTitle])) // update title
+    setToggleEditTitle(false)
+  }
+
+  const handleToggleTitle = () => {
+    setBoardTitle(board.title)
+    setToggleEditTitle(prev => !prev)
+  }
+
   return (
     <DndContext sensors={sensors} onDragStart={onDragStart} onDragEnd={onDragEnd} onDragOver={onDragOver}>
       <div className={styles.container}>
         <div className={styles.board_header}>
           <div className={styles.board_left}>
-            <div className={styles.board_item}>
+            <div className={styles.board_item} onClick={handleToggleTitle}>
               <FaFlipboard className={styles.title_icon}/>
-              <span className={styles.board_title}>{board.title}</span>
+              {!toggleEditTitle && <span className={styles.board_title}>{board.title}</span>}
+              {toggleEditTitle && <input className={styles.board_title_input} autoFocus type="text" value={boardTitle} onChange={(e) => setBoardTitle(e.target.value)} onBlur={handleEditTitleSubmit} onClick={(e) => e.stopPropagation()}/>}
             </div>
             <div onClick={handleToggleBoardFavorite} className={styles.board_item}>
               {
@@ -178,7 +196,7 @@ const MainBoard:React.FC<Props> = ({board}) => {
                 <span className={styles.board_span}>
                    {
                     lists.filter(list => list.boardId === board.id).length
-                   } list available
+                   } List Available
                 </span>
             </div>
             <div className={styles.board_item}>
