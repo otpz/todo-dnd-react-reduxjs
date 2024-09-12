@@ -1,14 +1,17 @@
-import React, { useEffect, useState } from 'react';
+import React, { FormEvent, useEffect, useRef, useState } from 'react';
 import { Sidebar, Menu, MenuItem, MenuItemStyles, menuClasses, } from 'react-pro-sidebar';
 import { SidebarHeader } from '../SidebarHeader/SidebarHeader';
 import styles from './style.module.css'
+import { GrClose, GrEdit, GrTrash } from "react-icons/gr";
 import { BsFillArrowLeftCircleFill, BsFillArrowRightCircleFill, BsFillTrash3Fill, BsPlusLg } from "react-icons/bs";
 import { RiTodoLine } from "react-icons/ri";
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../app/store';
 import { BoardType } from '../../types/BoardType';
 import { updateActiveBoardId } from '../../features/activeBoard/activeBoardSlice';
-import { deleteBoardById } from '../../features/boards/boardsSlice';
+import { addBoard, deleteBoardById } from '../../features/boards/boardsSlice';
+import { useClickOutside } from '../../hooks/useClickOutside';
+import ToggleForm from '../ToggleForm/ToggleForm';
 
 
 const themes = {
@@ -34,6 +37,8 @@ const SideMenu: React.FC = () => {
   const [collapsed, setCollapsed] = useState(false);
   const [toggled, setToggled] = useState(false);
   const [broken, setBroken] = useState(false);
+
+  const [toggleSettingsMenu, setToggleSettingsMenu] = useState<boolean>(false)
 
   const menuItemStyles: MenuItemStyles = {
     root: {
@@ -74,7 +79,10 @@ const SideMenu: React.FC = () => {
     }),
   };
 
+  const settingsRef = useRef<HTMLFormElement>(null)
+
   const dispatch = useDispatch()
+  useClickOutside(settingsRef, () => setToggleSettingsMenu(false))
   const activeBoardId = useSelector((state: RootState) => state.activeBoard.id)
   const boards: BoardType[] = useSelector((state: RootState) => state.boards)
 
@@ -87,6 +95,16 @@ const SideMenu: React.FC = () => {
     const isBoardExist = boards.find(board => board.id === activeBoardId)
     !isBoardExist && dispatch(updateActiveBoardId(boards[0]?.id))    
   }, [boards])
+
+  const handleFormSubmit = (e: FormEvent, inputValue: string) => {
+    e.preventDefault()
+    dispatch(addBoard(inputValue))
+    setToggleSettingsMenu(false)
+  }
+
+  const handleToggleForm = () => {
+    setToggleSettingsMenu(false)
+  }
 
   return (
     <div style={{ display: 'flex', height: '100%', overflow: "clip"}}>
@@ -117,7 +135,7 @@ const SideMenu: React.FC = () => {
                 <RiTodoLine className={styles.header_icon}/>
                 <span>My Boards</span>
               </div>
-              <div className={styles.add_icon_container}>
+              <div className={styles.add_icon_container} onClick={() => setToggleSettingsMenu(prev => !prev)}>
                 <BsPlusLg className={styles.add_icon}/>
               </div>
             </div>
@@ -140,6 +158,7 @@ const SideMenu: React.FC = () => {
                     </MenuItem>
                   ))
                 }
+                {toggleSettingsMenu && <ToggleForm formRef={settingsRef} handleFormSubmit={handleFormSubmit} handleToggleForm={handleToggleForm} placeholder={"Enter a board name"}/>}
             </Menu>
           </div>
         </div>

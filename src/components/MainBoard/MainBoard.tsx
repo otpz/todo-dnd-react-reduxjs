@@ -200,7 +200,7 @@ const MainBoard:React.FC<Props> = ({board}) => {
           <div className={styles.control}>
             {
               toggleForm === false ? <button onClick={handleToggleForm} className={styles.control_button}>+  Add new list</button> : 
-              <ToggleForm handleFormSubmit={handleFormSubmit} formRef={formRef} handleToggleForm={handleToggleForm}/>
+              <ToggleForm handleFormSubmit={handleFormSubmit} formRef={formRef} handleToggleForm={handleToggleForm} placeholder={"Enter a list name"}/>
             }
           </div>
         </div>

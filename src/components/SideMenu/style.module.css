@@ -72,3 +72,81 @@
     margin-top: 2px;
     font-size: 16px;
 }
+
+/* toggle settings menu */
+.settings_menu{
+    width: 200px;
+    height: 100px;
+    background-color: rgb(40, 46, 51);
+    border: 1px solid rgb(77, 88, 97);
+    border-radius: 10px;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.settings_header{
+    width: 100%;
+    height: 30px;
+    display: flex;
+    justify-content:center;
+    align-items: center;
+    padding-top: 10px;
+}
+
+.settings_header h4{
+    width: 100%;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 600;
+    color: rgb(159, 173, 188);
+    margin-bottom: .125rem;
+}
+
+.settings_close_div{
+    width: 1.5rem;
+    height: 1.5rem;
+    display: grid;
+    place-items: center;
+    position: absolute;
+    right: 10px;
+    border-radius: 5px;
+}
+
+.settings_close_div:hover{
+    background-color: rgb(61, 71, 79);
+}
+
+.settings_icon{
+    width: .875rem;
+    height: .875rem;
+    font-size: .875rem;  
+}
+
+.settings_buttons{
+    margin-top: 10px;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-self: center;
+    gap: 0;
+}
+
+.settings_buttons button{
+    width: 100%;
+    height: 25px;
+    text-align: left;
+    padding:5px 10px;
+    background-color: transparent;
+    color: rgb(159, 173, 188);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: none;
+    cursor: pointer;
+}
+
+.settings_buttons button:hover{
+    background-color: rgb(61, 71, 79);
+}

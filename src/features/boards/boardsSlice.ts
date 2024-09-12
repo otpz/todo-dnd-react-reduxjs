@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { BoardType } from "../../types/BoardType";
+import { createUniqueId } from "../../helpers/createUniqueId";
 
 const initialState: BoardType[] = [
     {id: "6b57d7aa641abf9e3befc4f3bed4aa1e", isFavorite: false,createdDate: Date.now(), title: "Main Board"},
@@ -12,8 +13,10 @@ export const boards = createSlice({
     name: "boards",
     initialState,
     reducers: {
-        addBoard: (state, action: PayloadAction<BoardType>): void => {
-            state.push(action.payload)
+        addBoard: (state, action: PayloadAction<string>): void => {
+            const newId = createUniqueId()
+            const newBoard: BoardType = {id: newId, title: action.payload, isFavorite: false, createdDate: Date.now()}
+            state.push(newBoard)
         },
         deleteBoardById: (state, action: PayloadAction<string>) => {
             return state.filter(board => board.id !== action.payload) // action.payload is id

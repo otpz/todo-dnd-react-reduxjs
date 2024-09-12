@@ -200,7 +200,7 @@ const List: React.FC<Props> = ({list, setLists, tasks, setTasks}) => {
             <button onClick={handleToggleForm} className={styles.button}>
             + Add new task
             </button> :
-            <ToggleForm formRef={formRef} handleToggleForm={handleToggleForm} handleFormSubmit={handleFormSubmit}/>
+            <ToggleForm formRef={formRef} handleToggleForm={handleToggleForm} handleFormSubmit={handleFormSubmit} placeholder={"Enter a task name"}/>
           }
         </div>
       </div>
