@@ -17,9 +17,13 @@ const BoardRender:React.FC<Props> = ({id}) => {
     return (
         <div className={styles.board_render_container}>
             {
-                boards.filter(board => board.id === activeBoardId).map((board, idx) => (
-                    <MainBoard key={idx} board={board}/>
-                ))
+                (() => {
+                    const board = boards.find(board => board.id === activeBoardId);
+                    return board ? <MainBoard board={board} /> : <div className={styles.not_found}>
+                        <p>You do not have any boards.</p>
+                        <p>Create a new board from the menu on the left.</p>
+                    </div>
+                })()
             }
         </div>
     )

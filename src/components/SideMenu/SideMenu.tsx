@@ -1,13 +1,14 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Sidebar, Menu, MenuItem, MenuItemStyles, menuClasses, } from 'react-pro-sidebar';
 import { SidebarHeader } from '../SidebarHeader/SidebarHeader';
 import styles from './style.module.css'
-import { BsFillArrowLeftCircleFill, BsFillArrowRightCircleFill } from "react-icons/bs";
+import { BsFillArrowLeftCircleFill, BsFillArrowRightCircleFill, BsFillTrash3Fill, BsPlusLg } from "react-icons/bs";
 import { RiTodoLine } from "react-icons/ri";
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../app/store';
 import { BoardType } from '../../types/BoardType';
 import { updateActiveBoardId } from '../../features/activeBoard/activeBoardSlice';
+import { deleteBoardById } from '../../features/boards/boardsSlice';
 
 
 const themes = {
@@ -46,14 +47,27 @@ const SideMenu: React.FC = () => {
     },
     button: {
         height: "32px",
+        userSelect: "none",
         [`&.${menuClasses.active}`]: {
           color: themes.menu.active.color,
           backgroundColor: themes.menu.active.backgroundColor,
+          div: {
+            display: "flex",
+            "&:hover": {
+              backgroundColor: "#6c6d70b3"
+            }
+          }
         },
         '&:hover': {
             backgroundColor: themes.menu.hover.backgroundColor,
             color: themes.menu.hover.color,
-        },  
+            div: {
+              display: "flex",
+              "&:hover": {
+                backgroundColor: "#6c6d70b3"
+              }
+            }
+        }, 
     },
     label: ({ open }) => ({
         fontWeight: open ? 600 : undefined,
@@ -63,6 +77,16 @@ const SideMenu: React.FC = () => {
   const dispatch = useDispatch()
   const activeBoardId = useSelector((state: RootState) => state.activeBoard.id)
   const boards: BoardType[] = useSelector((state: RootState) => state.boards)
+
+  const handleDeleteBoardById = (e: React.MouseEvent<HTMLDivElement, MouseEvent>, id: string) => {
+    e.stopPropagation()
+    dispatch(deleteBoardById(id))
+  }
+
+  useEffect(() => {
+    const isBoardExist = boards.find(board => board.id === activeBoardId)
+    !isBoardExist && dispatch(updateActiveBoardId(boards[0]?.id))    
+  }, [boards])
 
   return (
     <div style={{ display: 'flex', height: '100%', overflow: "clip"}}>
@@ -88,9 +112,14 @@ const SideMenu: React.FC = () => {
             }
           </div>
           <div style={{ flex: 1, marginBottom: '32px' }}>
-            <div className={styles.fontFamily} style={{ padding: '0 20px', marginBottom: '8px', fontSize: "18px", fontWeight:"bold", display: !collapsed ? "flex" : "none", flexDirection: "row", alignItems: "center"}}>
-              <RiTodoLine style={{marginRight: "10px"}}/>
-              <span>My Boards</span>
+            <div className={styles.fontFamily} style={{ padding: '0 20px', marginBottom: '8px', fontSize: "18px", fontWeight:"bold", display: !collapsed ? "flex" : "none", flexDirection: "row", alignItems: "center", position: "relative"}}>
+              <div className={styles.header_left}>
+                <RiTodoLine className={styles.header_icon}/>
+                <span>My Boards</span>
+              </div>
+              <div className={styles.add_icon_container}>
+                <BsPlusLg className={styles.add_icon}/>
+              </div>
             </div>
             <Menu menuItemStyles={menuItemStyles}>
                 {
@@ -99,8 +128,15 @@ const SideMenu: React.FC = () => {
                       key={idx}
                       onClick={() => dispatch(updateActiveBoardId(board.id))}
                       active={activeBoardId === board.id ? true : false}
+                      className={styles.menu_item}
                     >
                       {board.title}
+                      {
+                        !collapsed && 
+                        <div className={styles.delete_button} onClick={(e) => handleDeleteBoardById(e, board.id)}>
+                          <BsFillTrash3Fill />
+                        </div>
+                      }
                     </MenuItem>
                   ))
                 }

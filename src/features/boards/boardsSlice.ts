@@ -15,22 +15,20 @@ export const boards = createSlice({
         addBoard: (state, action: PayloadAction<BoardType>): void => {
             state.push(action.payload)
         },
-        deleteBoardById: (state, action: PayloadAction<string>): void => {
-            state.filter(board => board.id === action.payload) // action.payload is id
+        deleteBoardById: (state, action: PayloadAction<string>) => {
+            return state.filter(board => board.id !== action.payload) // action.payload is id
         },
         updateTitleById: (state, actions: PayloadAction<string[]>): void => {
-            state.map(board => {
-                if (board.id === actions.payload[0]){ // payload[0] is id
-                    board.title = actions.payload[1] // payload[1] is title
-                }
-            })
+            const board = state.find(board => board.id === actions.payload[0]) // payload[0] is id
+            if (board) {
+                board.title = actions.payload[1] // payload[1] is title
+            }
         },
         updateFavoiteById: (state, action: PayloadAction<string>): void => { // toggle favorite
-            state.map(board => {
-                if (board.id === action.payload){ // action.payload is id
-                    board.isFavorite = !board.isFavorite
-                }
-            })
+            const board = state.find(board => board.id === action.payload) // action is id
+            if (board) {
+                board.isFavorite = !board.isFavorite
+            }
         }
     }  
 })
