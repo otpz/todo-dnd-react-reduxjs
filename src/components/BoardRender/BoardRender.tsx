@@ -1,15 +1,11 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { BoardType } from '../../types/BoardType'
 import MainBoard from '../MainBoard/MainBoard'
 import styles from "./style.module.css"
 import { useSelector } from 'react-redux'
 import { RootState } from '../../app/store'
 
-interface Props {
-    id: string
-}
-
-const BoardRender:React.FC<Props> = ({id}) => {
+const BoardRender:React.FC = () => {
 
     const activeBoardId = useSelector((state: RootState) => state.activeBoard.id)
     const boards: BoardType[] = useSelector((state: RootState) => state.boards)

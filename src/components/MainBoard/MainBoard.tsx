@@ -1,4 +1,4 @@
-import { FormEvent, useMemo, useRef, useState } from 'react'
+import { FormEvent, useEffect, useMemo, useRef, useState } from 'react'
 import styles from './style.module.css'
 import List from '../List/List'
 import Task from '../Task/Task'
@@ -14,10 +14,9 @@ import {arrayMove, SortableContext} from "@dnd-kit/sortable"
 import { createPortal } from 'react-dom'
 import { createUniqueId } from '../../helpers/createUniqueId'
 import { FaFlipboard, FaRegListAlt, FaRegStar, FaStar, FaCalendarAlt } from "react-icons/fa";
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { updateFavoiteById, updateTitleById } from '../../features/boards/boardsSlice'
-import { updateActiveBoardId } from '../../features/activeBoard/activeBoardSlice'
-
+import { RootState } from '../../app/store'
 
 interface Props {
   board: BoardType
@@ -32,6 +31,7 @@ const MainBoard:React.FC<Props> = ({board}) => {
   const [toggleEditTitle, setToggleEditTitle] = useState<boolean>(false)
 
   useClickOutside(formRef, () => setToggleForm(false)) // close form when clicking form's outside custom hook
+  const searchInputText = useSelector((state: RootState) => state.searchInput.value)
   const dispatch = useDispatch()
 
   const [lists, setLists] = useState<ListType[]>([
@@ -174,6 +174,10 @@ const MainBoard:React.FC<Props> = ({board}) => {
     setToggleEditTitle(prev => !prev)
   }
 
+  useEffect(() => {
+    console.log(lists)
+  }, [lists])
+
   return (
     <DndContext sensors={sensors} onDragStart={onDragStart} onDragEnd={onDragEnd} onDragOver={onDragOver}>
       <div className={styles.container}>
@@ -182,7 +186,7 @@ const MainBoard:React.FC<Props> = ({board}) => {
             <div className={styles.board_item} onClick={handleToggleTitle}>
               <FaFlipboard className={styles.title_icon}/>
               {!toggleEditTitle && <span className={styles.board_title}>{board.title}</span>}
-              {toggleEditTitle && <input className={styles.board_title_input} autoFocus type="text" value={boardTitle} onChange={(e) => setBoardTitle(e.target.value)} onBlur={handleEditTitleSubmit} onClick={(e) => e.stopPropagation()}/>}
+              {toggleEditTitle && <input className={styles.board_title_input} autoFocus id='board_title_input' type="text" value={boardTitle} onChange={(e) => setBoardTitle(e.target.value)} onBlur={handleEditTitleSubmit} onClick={(e) => e.stopPropagation()}/>}
             </div>
             <div onClick={handleToggleBoardFavorite} className={styles.board_item}>
               {
@@ -209,8 +213,8 @@ const MainBoard:React.FC<Props> = ({board}) => {
         </div>
         <div className={styles.list}>
           <SortableContext items={listsId}>
-            {
-              lists.filter(list => list.boardId === board.id).map((list, idx) => (
+            { //.filter(list => list.title.includes(searchInputText))
+              lists.filter(list => list.title.includes(searchInputText)).filter(list => list.boardId === board.id).map((list, idx) => (
                 <List key={idx} list={list} setLists={setLists} tasks={tasks} setTasks={setTasks}/>
               ))
             }

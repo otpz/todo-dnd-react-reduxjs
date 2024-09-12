@@ -2,7 +2,6 @@ import React, { FormEvent, useEffect, useRef, useState } from 'react';
 import { Sidebar, Menu, MenuItem, MenuItemStyles, menuClasses, } from 'react-pro-sidebar';
 import { SidebarHeader } from '../SidebarHeader/SidebarHeader';
 import styles from './style.module.css'
-import { GrClose, GrEdit, GrTrash } from "react-icons/gr";
 import { BsFillArrowLeftCircleFill, BsFillArrowRightCircleFill, BsFillTrash3Fill, BsPlusLg } from "react-icons/bs";
 import { RiTodoLine } from "react-icons/ri";
 import { useDispatch, useSelector } from 'react-redux';
@@ -36,7 +35,6 @@ const themes = {
 const SideMenu: React.FC = () => {
   const [collapsed, setCollapsed] = useState(false);
   const [toggled, setToggled] = useState(false);
-  const [broken, setBroken] = useState(false);
 
   const [toggleSettingsMenu, setToggleSettingsMenu] = useState<boolean>(false)
 
@@ -92,9 +90,12 @@ const SideMenu: React.FC = () => {
   }
 
   useEffect(() => {
-    const isBoardExist = boards.find(board => board.id === activeBoardId)
-    !isBoardExist && dispatch(updateActiveBoardId(boards[0]?.id))    
-  }, [boards])
+    const setNewActiveBoard = () => {
+      const isBoardExist = boards.find(board => board.id === activeBoardId)
+      !isBoardExist && dispatch(updateActiveBoardId(boards[0]?.id))   
+    }
+    setNewActiveBoard()
+  }, [boards, dispatch, activeBoardId])
 
   const handleFormSubmit = (e: FormEvent, inputValue: string) => {
     e.preventDefault()
@@ -112,7 +113,6 @@ const SideMenu: React.FC = () => {
         collapsed={collapsed}
         toggled={toggled}
         onBackdropClick={() => setToggled(false)}
-        onBreakPoint={setBroken}
         breakPoint="md"
         backgroundColor={themes.sidebar.backgroundColor}
         rootStyles={{

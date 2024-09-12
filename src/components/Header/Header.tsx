@@ -7,8 +7,9 @@ const Header = () => {
     <nav className={styles.container}>
         <div className={styles.logo}>
           <BsCardChecklist className={styles.logo_icon}/>
-          <span>Trello</span></div>
-        <SearchForm/>
+          <span>Trello</span>
+          <SearchForm/>
+        </div>
         <ul className={styles.nav_list}>
             <li className={styles.list_item}>
               <a href="mailto: osmantopuz98@gmail.com">Contact Me</a>
