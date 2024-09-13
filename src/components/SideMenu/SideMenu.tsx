@@ -2,7 +2,7 @@ import React, { FormEvent, useEffect, useRef, useState } from 'react';
 import { Sidebar, Menu, MenuItem, MenuItemStyles, menuClasses, } from 'react-pro-sidebar';
 import { SidebarHeader } from '../SidebarHeader/SidebarHeader';
 import styles from './style.module.css'
-import { BsFillArrowLeftCircleFill, BsFillArrowRightCircleFill, BsFillTrash3Fill, BsPlusLg } from "react-icons/bs";
+import { BsFillArrowLeftCircleFill, BsFillArrowRightCircleFill, BsFillTrash3Fill, BsGithub, BsLinkedin, BsPlusLg } from "react-icons/bs";
 import { RiTodoLine } from "react-icons/ri";
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../app/store';
@@ -196,6 +196,17 @@ const SideMenu: React.FC = () => {
                 }
                 {toggleSettingsMenu && <ToggleForm formRef={settingsRef} handleFormSubmit={handleFormSubmit} handleToggleForm={handleToggleForm} placeholder={"Enter a board name"} boardForm={true}/>}
             </Menu>
+          </div>
+          <div className={styles.sidebar_footer}>
+            <div className={styles.footer_title}>Copyright © 
+              <a className={styles.footer_link} target='_blank' rel='noreferrer' href="https://www.linkedin.com/in/otpz/">Osman Topuz</a>
+            </div>
+            <div className={styles.footer_icons}>
+              <a target='_blank' rel='noreferrer' href="https://github.com/otpz"><BsGithub className={styles.footer_icon}/>
+              </a>
+              <a target='_blank' rel='noreferrer' href="https://www.linkedin.com/in/otpz/"><BsLinkedin className={styles.footer_icon}/>
+              </a>
+            </div>
           </div>
         </div>
       </Sidebar>
