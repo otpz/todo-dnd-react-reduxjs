@@ -213,8 +213,8 @@ const MainBoard:React.FC<Props> = ({board}) => {
         </div>
         <div className={styles.list}>
           <SortableContext items={listsId}>
-            { //.filter(list => list.title.includes(searchInputText))
-              lists.filter(list => list.title.includes(searchInputText)).filter(list => list.boardId === board.id).map((list, idx) => (
+            {
+              lists.filter(list => list.title.toLowerCase().includes(searchInputText.toLowerCase())).filter(list => list.boardId === board.id).map((list, idx) => (
                 <List key={idx} list={list} setLists={setLists} tasks={tasks} setTasks={setTasks}/>
               ))
             }

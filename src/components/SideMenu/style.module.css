@@ -4,30 +4,26 @@
 }
 
 .collapse_button{
-    width: 20px;
-    height: 20px;
-    color: rgb(0, 0, 0);
-    margin-left: auto;
+    width: 32px;    
+    height: 32px;
     display: grid;
     place-items: center;
     border-radius: 4px;
     transition: ease-in-out all 0.15s;
-    right: 0px;
+    right: -14px;
     position: absolute;
-    top: 23px;
-    z-index: 12323233;
+    top: 16px;
+    z-index: 12312323233;
 }
 
 .collapse_button:hover{
-    background-color: #474b5a;
+    background-color: #5c5e68;
 }
 
 .collapse_button .no_collapsed_icon,
 .collapse_button .collapsed_icon{
-    width: 14px;
-    height: 14px;
-    font-size: 14px;
-    font-weight: bold;
+    width: 20px;
+    height: 20px;
     color: rgb(236, 236, 236);
 }
 
@@ -149,4 +145,10 @@
 
 .settings_buttons button:hover{
     background-color: rgb(61, 71, 79);
+}
+
+.sidebar_container{
+    display: flex;
+    height: 100%;
+    position: relative;
 }

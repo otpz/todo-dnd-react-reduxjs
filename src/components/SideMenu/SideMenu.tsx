@@ -108,7 +108,14 @@ const SideMenu: React.FC = () => {
   }
 
   return (
-    <div style={{ display: 'flex', height: '100%', overflow: "clip"}}>
+    <div className={styles.sidebar_container} style={{maxWidth: "300px", display: 'flex', height: '100%', overflow: "visible"}}>
+      <div className={styles.collapse_button} onClick={() => setCollapsed(prev => !prev)}>
+        {
+          collapsed === true ? 
+          <BsFillArrowRightCircleFill className={styles.no_collapsed_icon}/> :
+          <BsFillArrowLeftCircleFill className={styles.collapsed_icon}/> 
+        }
+      </div>
       <Sidebar
         collapsed={collapsed}
         toggled={toggled}
@@ -120,15 +127,8 @@ const SideMenu: React.FC = () => {
             color: themes.sidebar.color,
         }}
       >
-        <div style={{ display: 'flex', flexDirection: 'column', height: '100%', position: "relative" }}>
+        <div style={{ display: 'flex', flexDirection: 'column', height: '100%'}}>
           <SidebarHeader rtl={false} style={{ borderBottom: "1px solid #363738", marginBottom: "24px" }} />
-          <div className={styles.collapse_button} onClick={() => setCollapsed(prev => !prev)}>
-            {
-              collapsed === true ? 
-              <BsFillArrowRightCircleFill className={styles.no_collapsed_icon}/> :
-              <BsFillArrowLeftCircleFill className={styles.collapsed_icon}/> 
-            }
-          </div>
           <div style={{ flex: 1, marginBottom: '32px' }}>
             <div className={styles.fontFamily} style={{ padding: '0 20px', marginBottom: '8px', fontSize: "18px", fontWeight:"bold", display: !collapsed ? "flex" : "none", flexDirection: "row", alignItems: "center", position: "relative"}}>
               <div className={styles.header_left}>
