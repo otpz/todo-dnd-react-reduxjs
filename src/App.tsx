@@ -3,6 +3,7 @@ import Header from './components/Header/Header';
 import BoardRender from './components/BoardRender/BoardRender';
 import './App.css'
 
+
 const App = () => {
   return (
     <div className="container">

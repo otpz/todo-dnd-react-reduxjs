@@ -7,7 +7,7 @@ export interface ActiveBoardState {
 }
 
 const initialState: ActiveBoardState = {
-    id: "6b57d7aa641abf9e3befc4f3bed4aa1e"
+    id: ""
 }
 
 export const activeBoardSlice = createSlice({

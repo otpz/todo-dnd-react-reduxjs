@@ -34,18 +34,8 @@ const MainBoard:React.FC<Props> = ({board}) => {
   const searchInputText = useSelector((state: RootState) => state.searchInput.value)
   const dispatch = useDispatch()
 
-  const [lists, setLists] = useState<ListType[]>([
-    // {id: "202cb962ac59075b964b07152d234b70", boardId: "6b57d7aa641abf9e3befc4f3bed4aa1e", title: "To Do"},
-    // {id: "920992cdde70074f393b6f8da2eec0e1", boardId: "6b57d7aa641abf9e3befc4f3bed4aa1e", title: "In Process",},
-    // {id: "244961af66c224e66ed81810e6a7a9c4", boardId: "6b57d7aa641abf9e3befc4f3bed4aa1e", title: "Completed",}
-  ])
-
-  const [tasks, setTasks] = useState<TaskType[]>([
-    // {id:"81dc9bdb52d04dc20036dbd8313ed055", title: "Learn Next.js", listId: "202cb962ac59075b964b07152d234b70"},
-    // {id:"4297f44b13955235245b2497399d7a93", title: "Learn Docker", listId: "202cb962ac59075b964b07152d234b70"},
-    // {id:"84aad89ca24745cf5444ae924778d624", title: "Learn Redux Toolkit", listId: "920992cdde70074f393b6f8da2eec0e1"},
-    // {id:"45ba9d71baea885abee139ea5edf15d2", title: "Learn Tailwind.css", listId: "244961af66c224e66ed81810e6a7a9c4"}
-  ])
+  const [lists, setLists] = useState<ListType[]>([])
+  const [tasks, setTasks] = useState<TaskType[]>([])
   
   useEffect(() => {
     const listData = window.localStorage.getItem("lists")
@@ -73,7 +63,7 @@ const MainBoard:React.FC<Props> = ({board}) => {
     }
   }, [tasks])
 
-  const listsId = useMemo(() => lists.map(list => list.id), [lists]) 
+  const listsId = useMemo(() => lists.map(list => list.id), [lists]) // for dragging lists 
 
   const handleToggleForm = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault()

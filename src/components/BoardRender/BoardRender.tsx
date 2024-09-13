@@ -5,6 +5,7 @@ import styles from "./style.module.css"
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '../../app/store'
 import { updateAllBoards } from '../../features/boards/boardsSlice'
+import { updateActiveBoardId } from '../../features/activeBoard/activeBoardSlice'
 
 const BoardRender:React.FC = () => {
 
@@ -16,6 +17,9 @@ const BoardRender:React.FC = () => {
     useEffect(() => {
         const data = window.localStorage.getItem("boards")
         if (data) dispatch(updateAllBoards(JSON.parse(data)))
+
+        const activeIdData = window.localStorage.getItem("active_board_id")
+        if (activeIdData) dispatch(updateActiveBoardId(JSON.parse(activeIdData)))
     }, [dispatch])
 
     useEffect(() => {
@@ -25,6 +29,13 @@ const BoardRender:React.FC = () => {
             window.localStorage.removeItem("boards")
         }
     }, [boards])
+
+    useEffect(() => {
+        if (activeBoardId) {
+            window.localStorage.setItem("active_board_id", JSON.stringify(activeBoardId))
+        }
+    }, [activeBoardId])
+
 
     return (
         <div className={styles.board_render_container}>

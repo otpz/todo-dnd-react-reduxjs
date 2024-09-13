@@ -11,7 +11,7 @@ import { updateActiveBoardId } from '../../features/activeBoard/activeBoardSlice
 import { addBoard, deleteBoardById } from '../../features/boards/boardsSlice';
 import { useClickOutside } from '../../hooks/useClickOutside';
 import ToggleForm from '../ToggleForm/ToggleForm';
-
+import Joyride from 'react-joyride';
 
 const themes = {
     sidebar: {
@@ -35,9 +35,9 @@ const themes = {
 const SideMenu: React.FC = () => {
   const [collapsed, setCollapsed] = useState(false);
   const [toggled, setToggled] = useState(false);
-
   const [toggleSettingsMenu, setToggleSettingsMenu] = useState<boolean>(false)
-
+  const activeBoardId = useSelector((state: RootState) => state.activeBoard.id)
+  
   const menuItemStyles: MenuItemStyles = {
     root: {
         fontSize: '14px',
@@ -77,11 +77,38 @@ const SideMenu: React.FC = () => {
     }),
   };
 
+  useEffect(() => {
+    const id: string = localStorage.getItem("active_board_id")!!
+    if (id){
+      console.log(id)
+    }
+  }, [activeBoardId])
+
+  const [{run, steps}] = useState({
+    run: localStorage.getItem("active_board_id") ? false : true,
+    steps: [
+      {
+        title: "Welcome to Trello!",
+        content: <p>Let's begin! First, we can create a new board.</p>,
+        locale: {skip: <strong>SKIP</strong>},
+        placement: "center" as "center",
+        target: "body",
+      },
+      {
+        title: "New Board",
+        content: <p>You can create a new board by clicking.</p>,
+        locale: {skip: <strong>SKIP</strong>},
+        target: "#add_icon_container"
+      },
+    ]
+  })
+
+
   const settingsRef = useRef<HTMLFormElement>(null)
 
   const dispatch = useDispatch()
   useClickOutside(settingsRef, () => setToggleSettingsMenu(false))
-  const activeBoardId = useSelector((state: RootState) => state.activeBoard.id)
+  
   const boards: BoardType[] = useSelector((state: RootState) => state.boards)
 
   const handleDeleteBoardById = (e: React.MouseEvent<HTMLDivElement, MouseEvent>, id: string) => {
@@ -109,6 +136,15 @@ const SideMenu: React.FC = () => {
 
   return (
     <div className={styles.sidebar_container} style={{maxWidth: "300px", display: 'flex', height: '100%', overflow: "visible"}}>
+      <Joyride
+          continuous
+          run={run}
+          steps={steps}
+          hideCloseButton
+          scrollToFirstStep
+          showSkipButton
+          showProgress
+      />
       <div className={styles.collapse_button} onClick={() => setCollapsed(prev => !prev)}>
         {
           collapsed === true ? 
@@ -135,7 +171,7 @@ const SideMenu: React.FC = () => {
                 <RiTodoLine className={styles.header_icon}/>
                 <span>My Boards</span>
               </div>
-              <div className={styles.add_icon_container} onClick={() => setToggleSettingsMenu(prev => !prev)}>
+              <div id='add_icon_container' className={styles.add_icon_container} onClick={() => setToggleSettingsMenu(prev => !prev)}>
                 <BsPlusLg className={styles.add_icon}/>
               </div>
             </div>
