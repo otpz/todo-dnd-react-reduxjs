@@ -19,8 +19,10 @@ const BoardRender:React.FC = () => {
     }, [dispatch])
 
     useEffect(() => {
-        if (boards.length > 0){
+        if (boards.length > 0) {
             window.localStorage.setItem("boards", JSON.stringify(boards))
+        } else {
+            window.localStorage.removeItem("boards")
         }
     }, [boards])
 

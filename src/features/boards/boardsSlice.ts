@@ -19,6 +19,7 @@ export const boards = createSlice({
             state.push(newBoard)
         },
         deleteBoardById: (state, action: PayloadAction<string>) => {
+            console.log(state.filter(board =>board.id !== action.payload))
             return state.filter(board => board.id !== action.payload) // action.payload is id
         },
         updateTitleById: (state, actions: PayloadAction<string[]>): void => {
