@@ -1,14 +1,28 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { BoardType } from '../../types/BoardType'
 import MainBoard from '../MainBoard/MainBoard'
 import styles from "./style.module.css"
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '../../app/store'
+import { updateAllBoards } from '../../features/boards/boardsSlice'
 
 const BoardRender:React.FC = () => {
 
     const activeBoardId = useSelector((state: RootState) => state.activeBoard.id)
     const boards: BoardType[] = useSelector((state: RootState) => state.boards)
+    const dispatch = useDispatch()
+
+    // local storage
+    useEffect(() => {
+        const data = window.localStorage.getItem("boards")
+        if (data) dispatch(updateAllBoards(JSON.parse(data)))
+    }, [dispatch])
+
+    useEffect(() => {
+        if (boards.length > 0){
+            window.localStorage.setItem("boards", JSON.stringify(boards))
+        }
+    }, [boards])
 
     return (
         <div className={styles.board_render_container}>
