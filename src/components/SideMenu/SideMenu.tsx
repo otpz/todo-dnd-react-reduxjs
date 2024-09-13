@@ -20,7 +20,7 @@ const themes = {
     },
     menu: {
         menuContent: '#1D1E28',
-        innerHeight: "32px",
+        // innerHeight: "32px",
         active: {
           backgroundColor: '#41424A',
           color: '#9FADBC',
@@ -135,7 +135,7 @@ const SideMenu: React.FC = () => {
   }
 
   return (
-    <div className={styles.sidebar_container} style={{maxWidth: "300px", display: 'flex', height: '100%', overflow: "visible"}}>
+    <div className={styles.sidebar_container}>
       <Joyride
           continuous
           run={run}
@@ -156,17 +156,18 @@ const SideMenu: React.FC = () => {
         collapsed={collapsed}
         toggled={toggled}
         onBackdropClick={() => setToggled(false)}
-        breakPoint="md"
+        breakPoint="xs"
         backgroundColor={themes.sidebar.backgroundColor}
         rootStyles={{
-            borderRight: "1px solid #47474766",
-            color: themes.sidebar.color,
+          minWidth: "230px",
+          width: "250px",
+          borderRight: "1px solid #47474766",
+          color: themes.sidebar.color,
         }}
       >
-        <div style={{ display: 'flex', flexDirection: 'column', height: '100%'}}>
+        <div className={styles.sidebar_middle}>
           <SidebarHeader rtl={false} style={{ borderBottom: "1px solid #363738", marginBottom: "24px" }} />
-          <div style={{ flex: 1, marginBottom: '32px' }}>
-            <div className={styles.fontFamily} style={{ padding: '0 20px', marginBottom: '8px', fontSize: "18px", fontWeight:"bold", display: !collapsed ? "flex" : "none", flexDirection: "row", alignItems: "center", position: "relative"}}>
+          <div className={styles.fontFamily} style={{ padding: '0 20px', marginBottom: '8px', fontSize: "18px", fontWeight:"bold", display: !collapsed ? "flex" : "none", flexDirection: "row", alignItems: "center", position: "relative"}}>
               <div className={styles.header_left}>
                 <RiTodoLine className={styles.header_icon}/>
                 <span>My Boards</span>
@@ -174,8 +175,8 @@ const SideMenu: React.FC = () => {
               <div id='add_icon_container' className={styles.add_icon_container} onClick={() => setToggleSettingsMenu(prev => !prev)}>
                 <BsPlusLg className={styles.add_icon}/>
               </div>
-            </div>
-            <Menu menuItemStyles={menuItemStyles}>
+          </div>
+          <Menu menuItemStyles={menuItemStyles} className={styles.menu}>
                 {
                   boards.map((board, idx) => (
                     <MenuItem 
@@ -195,9 +196,8 @@ const SideMenu: React.FC = () => {
                   ))
                 }
                 {toggleSettingsMenu && <ToggleForm formRef={settingsRef} handleFormSubmit={handleFormSubmit} handleToggleForm={handleToggleForm} placeholder={"Enter a board name"} boardForm={true}/>}
-            </Menu>
-          </div>
-          <div className={styles.sidebar_footer}>
+          </Menu>
+          <div className={styles.sidebar_footer} style={{display: collapsed ? "none" : "flex"}}>
             <div className={styles.footer_title}>Copyright © 
               <a className={styles.footer_link} target='_blank' rel='noreferrer' href="https://www.linkedin.com/in/otpz/">Osman Topuz</a>
             </div>
