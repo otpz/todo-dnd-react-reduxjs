@@ -1,3 +1,6 @@
+# Trello Board App with Drag and Drop
+This app developed with React and I use ReduxToolkit and Typescript.
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
