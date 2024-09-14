@@ -6,7 +6,6 @@
     position: relative;
     display: flex;
     align-items: center;
-    margin-left: 157px;
 }
 
 .search_icon{
@@ -40,7 +39,6 @@
     .search_div{
         max-width: 270px;
         justify-content: flex-start;
-        margin-left: 160px;
     }
     
     .search{

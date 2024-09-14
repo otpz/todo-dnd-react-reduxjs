@@ -6,7 +6,7 @@
     display: flex;
     flex-direction: column;
     background-color: #152e51;
-    overflow-x: auto;
+    overflow-x: hidden;
     overflow-y: hidden;
 }
 
@@ -21,4 +21,19 @@
     color: white;
     font-size: 28px;
     font-weight: 700;
+}
+
+.not_found p{
+    text-align: center;
+}
+
+@media screen and (max-width: 700px) {
+    .not_found{
+        min-width: 250px;
+        width: 90%;
+        font-size: 22px;
+        font-weight: 600;
+        align-self: center;
+        justify-self: center;
+    }
 }

@@ -146,12 +146,11 @@ const SideMenu: React.FC = () => {
       </div>
       <Sidebar
         collapsed={collapsed}
-        toggled={toggled}
-        onBackdropClick={() => setToggled(false)}
+        // toggled={toggled}
+        // onBackdropClick={() => setToggled(false)}
+        collapsedWidth={"20px"}
         backgroundColor={themes.sidebar.backgroundColor}
         rootStyles={{
-          minWidth: "230px",
-          width: "250px",
           borderRight: "1px solid #47474766",
           color: themes.sidebar.color,
         }}

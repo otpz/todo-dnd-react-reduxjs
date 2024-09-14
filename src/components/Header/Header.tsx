@@ -10,8 +10,8 @@ const Header = () => {
             <BsCardChecklist className={styles.logo_icon}/>
             <span>Trello</span>
           </div>
-          <SearchForm/>
         </div>
+        <SearchForm/>
         <ul className={styles.nav_list}>
             <li className={styles.list_item}>
               <a href="mailto: osmantopuz98@gmail.com">Contact Me</a>
