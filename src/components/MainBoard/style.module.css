@@ -24,7 +24,6 @@
 
 .board_right,
 .board_left{
-  /* min-width: 300px; */
   height: 100%;
   display: flex;
   align-items: center;
@@ -163,4 +162,43 @@
 .control .control_button:hover{
     transition: ease-in-out all 0.2s;
     background-color: rgba(14, 16, 3, 0.8)
+}
+
+/* CSS SCREEN MEDIA */
+
+@media screen and (max-width: 670px) {
+  
+  .board_header{
+    min-height: 84px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+  }
+  
+  .board_right{
+    justify-content: flex-start;
+  }
+  
+  .board_title{
+    font-weight: 600;
+  }
+  
+  .board_title_input{
+    font-weight: 600;  
+  }
+
+  .board_span{
+    font-size: 12px;
+    font-weight: 500;
+    max-width: 200px;
+    color: white;
+  }
+  
+  .board_icon{
+    font-size: 14px;
+    margin-top: 1px;
+    margin-right: 6px;
+  }
+
 }

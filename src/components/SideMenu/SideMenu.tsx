@@ -77,13 +77,6 @@ const SideMenu: React.FC = () => {
     }),
   };
 
-  useEffect(() => {
-    const id: string = localStorage.getItem("active_board_id")!!
-    if (id){
-      console.log(id)
-    }
-  }, [activeBoardId])
-
   const [{run, steps}] = useState({
     run: localStorage.getItem("active_board_id") ? false : true,
     steps: [
@@ -102,7 +95,6 @@ const SideMenu: React.FC = () => {
       },
     ]
   })
-
 
   const settingsRef = useRef<HTMLFormElement>(null)
 
@@ -156,7 +148,6 @@ const SideMenu: React.FC = () => {
         collapsed={collapsed}
         toggled={toggled}
         onBackdropClick={() => setToggled(false)}
-        breakPoint="xs"
         backgroundColor={themes.sidebar.backgroundColor}
         rootStyles={{
           minWidth: "230px",
@@ -199,7 +190,7 @@ const SideMenu: React.FC = () => {
           </Menu>
           <div className={styles.sidebar_footer} style={{display: collapsed ? "none" : "flex"}}>
             <div className={styles.footer_title}>Copyright © 
-              <a className={styles.footer_link} target='_blank' rel='noreferrer' href="https://www.linkedin.com/in/otpz/">Osman Topuz</a>
+              <p style={{marginTop: "5px"}}>Built by<a className={styles.footer_link} target='_blank' rel='noreferrer' href="https://www.linkedin.com/in/otpz/">Osman Topuz</a></p>
             </div>
             <div className={styles.footer_icons}>
               <a target='_blank' rel='noreferrer' href="https://github.com/otpz"><BsGithub className={styles.footer_icon}/>

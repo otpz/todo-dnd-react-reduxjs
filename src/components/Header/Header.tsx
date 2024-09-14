@@ -6,8 +6,10 @@ const Header = () => {
   return (
     <nav className={styles.container}>
         <div className={styles.logo}>
-          <BsCardChecklist className={styles.logo_icon}/>
-          <span>Trello</span>
+          <div className={styles.logo_inner}>
+            <BsCardChecklist className={styles.logo_icon}/>
+            <span>Trello</span>
+          </div>
           <SearchForm/>
         </div>
         <ul className={styles.nav_list}>
