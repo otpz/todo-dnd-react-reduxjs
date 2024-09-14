@@ -1,6 +1,16 @@
 # Trello Board App with Drag and Drop
 This app developed with React and I use ReduxToolkit and Typescript.
 
+To try the Trello Board application, visit -> https://otpz.github.io/todo-dnd-react-reduxjs/
+
+In this application, users can create lists and task cards on a workspace and take notes. Additionally, all lists and task cards have a drag-and-drop feature, making it easy to use. Lists on the workspace can be filtered by name. A simple tutorial helps guide users when the website is first opened.
+
+Users can create unlimited workspaces, lists, and tasks. All data is stored in the browser's local storage.
+
+The application is responsive to mobile browsers, but for the best experience with the drag-and-drop feature, desktop browsers are recommended.
+
+If you find the app useful, you can download it as a desktop application by clicking the icon in the browser's address bar.
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
