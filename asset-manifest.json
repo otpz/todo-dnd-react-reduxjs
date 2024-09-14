@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/todo-dnd-react-reduxjs/static/css/main.1e8ec4ad.css",
+    "main.js": "/todo-dnd-react-reduxjs/static/js/main.09957898.js",
+    "static/js/453.053ab0bb.chunk.js": "/todo-dnd-react-reduxjs/static/js/453.053ab0bb.chunk.js",
+    "index.html": "/todo-dnd-react-reduxjs/index.html",
+    "main.1e8ec4ad.css.map": "/todo-dnd-react-reduxjs/static/css/main.1e8ec4ad.css.map",
+    "main.09957898.js.map": "/todo-dnd-react-reduxjs/static/js/main.09957898.js.map",
+    "453.053ab0bb.chunk.js.map": "/todo-dnd-react-reduxjs/static/js/453.053ab0bb.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.1e8ec4ad.css",
+    "static/js/main.09957898.js"
+  ]
+}
